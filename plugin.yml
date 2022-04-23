@@ -1,5 +1,5 @@
 name: BanSystem
-version: 1.0.0
+version: lol
 api: 4.0.0
 main: BanSystem\BanSystem
 authors:
