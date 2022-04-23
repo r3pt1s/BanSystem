@@ -1,2 +1,2 @@
 # BanSystem
-A Ban- and MuteSystem for PocketMine-MP 
+A Ban-, Warn- and MuteSystem for PocketMine-MP 
