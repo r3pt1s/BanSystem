@@ -1,0 +1,6 @@
+name: BanSystem
+version: 1.0
+api: 4.0.0
+main: BanSystem\BanSystem
+authors:
+  - r3pt1s
