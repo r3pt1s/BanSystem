@@ -5,6 +5,7 @@ branches:
 projects:
   BanSystem:
     path: ""
+    libs:
       - src: dktapps-pm-pl/pmforms/pmforms
         version: ^2.0.0
 ...
