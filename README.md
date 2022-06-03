@@ -29,7 +29,7 @@ A system for pocketmine servers.
 - /banlist - banlist.command
 
 ## Commands - Permissions (Mute)
-- /mute [player] [banId] - mute.command
+- /mute [player] [muteId] - mute.command
 - /tempmute [player] [reason] [time] - tempmute.command
 - /editmute [player] [add|sub] [time] - editmute.command
 - /unmute [player] - unmute.command
