@@ -19,40 +19,40 @@ A system for pocketmine servers.
 - Custom paths
 
 ## Commands - Permissions (Ban)
-- /ban [player] [banId] - ban.command
-- /tempban [player] [reason] [time] - tempban.command
-- /editban [player] [add|sub] [time] - editban.command
-- /unban [player] - unban.command
-- /baninfo [player] - baninfo.command
-- /banlog [player] - banlog.command
-- /banids - banids.command
-- /banlist - banlist.command
+- /ban [player] [banId] - bansystem.ban.command
+- /tempban [player] [reason] [time] - bansystem.tempban.command
+- /editban [player] [add|sub] [time] - bansystem.editban.command
+- /unban [player] - bansystem.unban.command
+- /baninfo [player] - bansystem.baninfo.command
+- /banlog [player] -bansystem.banlog.command
+- /banids - bansystem.banids.command
+- /banlist - bansystem.banlist.command
 
 ## Commands - Permissions (Mute)
-- /mute [player] [muteId] - mute.command
-- /tempmute [player] [reason] [time] - tempmute.command
-- /editmute [player] [add|sub] [time] - editmute.command
-- /unmute [player] - unmute.command
-- /muteinfo [player] - muteinfo.command
-- /mutelog [player] - mutelog.command
-- /muteids - muteids.command
-- /mutelist - mutelist.command
+- /mute [player] [banId] - bansystem.mute.command
+- /tempmute [player] [reason] [time] - bansystem.tempmute.command
+- /editmute [player] [add|sub] [time] - bansystem.editmute.command
+- /unmute [player] - bansystem.unmute.command
+- /muteinfo [player] - bansystem.muteinfo.command
+- /mutelog [player] - bansystem.mutelog.command
+- /muteids - bansystem.muteids.command
+- /mutelist - bansystem.mutelist.command
 
 ## Commands - Permissions (Warn)
-- /warn [player] [reason] - warn.command
-- /warns [player] - warns.command
-- /resetwarns [player] - resetwarns.command
+- /warn [player] [reason] - bansystem.warn.command
+- /warns [player] - bansystem.warns.command
+- /resetwarns [player] - bansystem.resetwarns.command
 
 ## Commands - Permissions (Kick)
-- /kick [player] [reason] - kick.command
+- /kick [player] [reason] - bansystem.kick.command
 
 ## Commands - Permissions (Notify)
-- /notify - notify.command
+- /notify - bansystem.notify.command
 
 ## Extra Permissions
-- notify.receive - To receive notifications 
-- ban.bypass - To bypass a ban
-- mute.bypass - To bypass a mute
+- bansystem.notify.receive - To receive notifications 
+- bansystem.ban.bypass - To bypass a ban
+- bansystem.mute.bypass - To bypass a mute
 
 ## Issue / Bug report 
 - [Create an Issue](https://github.com/PocketCloudSystem/CloudSystem/issues/new)
