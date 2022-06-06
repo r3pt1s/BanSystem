@@ -12,8 +12,14 @@ class Configuration {
         "ban", "mute", "kick", "warn"
     ];
 
+    private const VALID_PROVIDERS = [
+        "mysql", "json"
+    ];
+
     private Config $config;
     private Config $idsFile;
+    private string $provider;
+    private array $mysqlSettings;
     private string $prefix;
     private string $mutePath;
     private string $banPath;
@@ -35,6 +41,19 @@ class Configuration {
     }
     
     private function load() {
+        if ($this->config->exists("provider")) {
+            if (in_array(strtolower($this->config->get("provider")), self::VALID_PROVIDERS)) {
+                $this->provider = strtolower($this->config->get("provider"));
+            } else $this->provider = "json";
+        } else $this->provider = "json";
+
+        if ($this->provider == "mysql") {
+            if ($this->config->exists("mysqlSettings")) {
+                $settings = (array) $this->config->get("mysqlSettings", []);
+                $this->mysqlSettings = ["host" => $settings["host"] ?? "127.0.0.1", "port" => $settings["port"] ?? 3306, "user" => $settings["user"] ?? "root", "password" => $settings["password"] ?? "", "database" => $settings["database"] ?? "bansystem"];
+            } else $this->mysqlSettings = ["host" => "127.0.0.1", "port" => 3306, "user" => "root", "password" => "", "database" => "bansystem"];
+        } else $this->mysqlSettings = [];
+
         if ($this->config->exists("prefix")) {
             $this->prefix = $this->config->get("prefix");
         } else $this->prefix = "§c§lBanSystem §r§8» §7";
@@ -143,6 +162,14 @@ class Configuration {
     public function reload() {
         $this->config->reload();
         $this->load();
+    }
+
+    public function getProvider(): string {
+        return $this->provider;
+    }
+
+    public function getMysqlSettings(): array {
+        return $this->mysqlSettings;
     }
 
     public function getPrefix(): string {

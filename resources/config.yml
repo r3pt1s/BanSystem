@@ -1,3 +1,14 @@
+# Provider for the bans, mutes, warns and players
+# Valid: json, mysql
+# Default: json
+provider: json
+# MySQL Settings (only change when using mysql as provider)
+mysqlSettings:
+  host: "127.0.0.1"
+  port: 3306
+  user: "root"
+  password: ""
+  database: "bansystem"
 # Prefix for the messages
 # Default = §c§lBanSystem §r§8» §7
 prefix: "§c§lBanSystem §r§8» §7"
@@ -30,4 +41,4 @@ make-ban-mute-logs: true
 # Blocked commands for muted players
 # Without '/'
 blocked-commands:
-- msg
+- tell # /msg

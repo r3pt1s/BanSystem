@@ -24,6 +24,7 @@ use r3pt1s\BanSystem\command\notify\NotifyCommand;
 use r3pt1s\BanSystem\command\warn\ResetWarnsCommand;
 use r3pt1s\BanSystem\command\warn\WarnCommand;
 use r3pt1s\BanSystem\command\warn\WarnsCommand;
+use r3pt1s\BanSystem\database\Database;
 use r3pt1s\BanSystem\listener\EventListener;
 use r3pt1s\BanSystem\manager\ban\BanManager;
 use r3pt1s\BanSystem\manager\mute\MuteManager;
@@ -36,14 +37,13 @@ use r3pt1s\BanSystem\utils\Configuration;
 use pocketmine\permission\DefaultPermissions;
 use pocketmine\permission\Permission;
 use pocketmine\permission\PermissionManager;
-use pocketmine\player\Player;
 use pocketmine\plugin\PluginBase;
 use pocketmine\utils\Config;
 
 class BanSystem extends PluginBase {
 
     const NO_PERMS = "§cYou do not have the permission to use the command!";
-    public static float $VERSION = 1.0;
+    public static float $VERSION = 2.0;
 
     private static self $instance;
     private Configuration $configuration;
@@ -51,6 +51,7 @@ class BanSystem extends PluginBase {
     private MuteManager $muteManager;
     private WarnManager $warnManager;
     private NotifyManager $notifyManager;
+    private ?Database $database = null;
 
     protected function onEnable(): void {
         self::$instance = $this;
@@ -64,14 +65,18 @@ class BanSystem extends PluginBase {
         $this->warnManager = new WarnManager();
         $this->notifyManager = new NotifyManager();
 
+        if ($this->configuration->getProvider() == "mysql") {
+            $this->database = new Database();
+        }
+
         $this->getServer()->getPluginManager()->registerEvents(new EventListener(), $this);
         $this->getScheduler()->scheduleRepeatingTask(new PlayerKickTask(), 20);
         $this->getScheduler()->scheduleRepeatingTask(new CheckTask(), 20);
 
-        $this->registerPermission("bansytem.kick.command", "bansytem.notify.command", "bansytem.warn.command", "bansytem.warns.command", "bansytem.resetwarns.command");
-        $this->registerPermission("bansytem.ban.command", "bansytem.tempban.command", "bansytem.unban.command", "bansytem.banids.command", "bansytem.banlist.command", "bansytem.baninfo.command", "bansytem.editban.command", "bansytem.banlog.command");
-        $this->registerPermission("bansytem.mute.command", "bansytem.tempmute.command", "bansytem.unmute.command", "bansytem.muteids.command", "bansytem.mutelist.command", "bansytem.muteinfo.command", "bansytem.editmute.command", "bansytem.mutelog.command");
-        $this->registerPermission("bansytem.notify.receive", "bansytem.ban.bypass", "bansytem.mute.bypass");
+        $this->registerPermission("bansystem.kick.command", "bansystem.notify.command", "bansystem.warn.command", "bansystem.warns.command", "bansystem.resetwarns.command");
+        $this->registerPermission("bansystem.ban.command", "bansystem.tempban.command", "bansystem.unban.command", "bansystem.banids.command", "bansystem.banlist.command", "bansystem.baninfo.command", "bansystem.editban.command", "bansystem.banlog.command");
+        $this->registerPermission("bansystem.mute.command", "bansystem.tempmute.command", "bansystem.unmute.command", "bansystem.muteids.command", "bansystem.mutelist.command", "bansystem.muteinfo.command", "bansystem.editmute.command", "bansystem.mutelog.command");
+        $this->registerPermission("bansystem.notify.receive", "bansystem.ban.bypass", "bansystem.mute.bypass");
 
         $this->unregisterCommand("kick", "ban", "pardon", "banlist");
         $this->getServer()->getCommandMap()->registerAll("banSystem", [
@@ -102,6 +107,7 @@ class BanSystem extends PluginBase {
         $this->getLogger()->info(self::getPrefix() . "§aLoaded!");
         $this->getLogger()->info(self::getPrefix() . "§7Version: §e" . $this->getDescription()->getVersion());
         $this->getLogger()->info(self::getPrefix() . "§7Developer(s): §e" . implode("§8, §e", $this->getDescription()->getAuthors()));
+        $this->getLogger()->info(self::getPrefix() . "§7Provider: §b" . strtoupper($this->getConfiguration()->getProvider()));
         $this->getLogger()->info(self::getPrefix() . "§7Checking for updates...");
         $this->getServer()->getAsyncPool()->submitTask(new CheckUpdateTask());
     }
@@ -117,26 +123,6 @@ class BanSystem extends PluginBase {
         foreach ($commandNames as $commandName) {
             if (($command = $this->getServer()->getCommandMap()->getCommand($commandName)) !== null) $this->getServer()->getCommandMap()->unregister($command);
         }
-    }
-
-    public function createPlayer(Player $player) {
-        $cfg = new Config(BanSystem::getInstance()->getConfiguration()->getInfoPath() . "/players.json", 1);
-        if (!$cfg->exists($player->getName())) {
-            $cfg->set($player->getName(), [
-                "BanPoints" => 0,
-                "MutePoints" => 0,
-                "WarnCount" => 0,
-                "Notify" => false
-            ]);
-            $cfg->save();
-        }
-    }
-
-    public function isPlayerCreated(Player|string $player) {
-        $player = $player instanceof Player ? $player->getName() : $player;
-
-        $cfg = new Config(BanSystem::getInstance()->getConfiguration()->getInfoPath() . "/players.json", 1);
-        return $cfg->exists($player);
     }
 
     public function getConfiguration(): Configuration {
@@ -157,6 +143,10 @@ class BanSystem extends PluginBase {
 
     public function getNotifyManager(): NotifyManager {
         return $this->notifyManager;
+    }
+
+    public function getDatabase(): ?Database {
+        return $this->database;
     }
 
     public static function getPrefix(): string {

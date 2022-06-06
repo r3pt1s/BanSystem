@@ -5,9 +5,9 @@ namespace r3pt1s\BanSystem\manager\ban;
 use r3pt1s\BanSystem\BanSystem;
 use r3pt1s\BanSystem\handler\BanHandler;
 use r3pt1s\BanSystem\manager\notify\NotifyManager;
+use r3pt1s\BanSystem\provider\CurrentProvider;
 use r3pt1s\BanSystem\utils\Utils;
 use pocketmine\player\Player;
-use pocketmine\utils\Config;
 
 class BanManager {
 
@@ -27,21 +27,13 @@ class BanManager {
         $player = $player instanceof Player ? $player->getName() : $player;
         $moderator = $moderator instanceof Player ? $moderator->getName() : $moderator;
 
-        $cfg = $this->getConfig();
         $idData = BanSystem::getInstance()->getConfiguration()->getBanIds()[$id];
         $bannedAt = (new \DateTime("now"))->format("Y-m-d H:i:s");
         $time = ($idData["duration"] == "-1" ? "-1" : Utils::convertStringToDateFormat($idData["duration"])->format("Y-m-d H:i:s"));
 
         $this->addBanPoint($player);
 
-        $cfg->set($player, [
-            "Type" => self::TYPE_BAN,
-            "Moderator" => $moderator,
-            "Id" => $id,
-            "Time" => $time,
-            "BannedAt" => $bannedAt
-        ]);
-        $cfg->save();
+        CurrentProvider::get()->pushBan($player, self::TYPE_BAN, $moderator, $id, $time, $bannedAt);
 
         $this->createBanLog($player, $moderator, $idData["reason"], $time, $bannedAt);
 
@@ -56,20 +48,12 @@ class BanManager {
         $player = $player instanceof Player ? $player->getName() : $player;
         $moderator = $moderator instanceof Player ? $moderator->getName() : $moderator;
 
-        $cfg = $this->getConfig();
         $bannedAt = (new \DateTime("now"))->format("Y-m-d H:i:s");
         $time = ($duration== "-1" ? "-1" : Utils::convertStringToDateFormat($duration)->format("Y-m-d H:i:s"));
 
         $this->addBanPoint($player);
 
-        $cfg->set($player, [
-            "Type" => self::TYPE_TEMP_BAN,
-            "Moderator" => $moderator,
-            "Reason" => $reason,
-            "Time" => $time,
-            "BannedAt" => $bannedAt
-        ]);
-        $cfg->save();
+        CurrentProvider::get()->pushTempBan($player, self::TYPE_TEMP_BAN, $moderator, $reason, $time, $bannedAt);
 
         $this->createBanLog($player, $moderator, $reason, $time, $bannedAt);
 
@@ -84,9 +68,7 @@ class BanManager {
         $player = $player instanceof Player ? $player->getName() : $player;
         $moderator = $moderator instanceof Player ? $moderator->getName() : $moderator;
 
-        $cfg = $this->getConfig();
-        $cfg->remove($player);
-        $cfg->save();
+        CurrentProvider::get()->removeBan($player);
 
         if ($moderator == "automatic") NotifyManager::sendNotify(BanSystem::getPrefix() . "§e" . $player . " §7was automatically unbanned!");
         else NotifyManager::sendNotify(BanSystem::getPrefix() . "§e" . $player . " §7was unbanned by §c" . $moderator . "§7!");
@@ -94,7 +76,7 @@ class BanManager {
 
     public function isBanned(Player|string $player): bool {
         $player = $player instanceof Player ? $player->getName() : $player;
-        return $this->getConfig()->exists($player);
+        return CurrentProvider::get()->isBanned($player);
     }
 
     public function isBanExpired(Player|string $player): bool {
@@ -114,17 +96,7 @@ class BanManager {
     public function addBanPoint(Player|string $player) {
         $player = $player instanceof Player ? $player->getName() : $player;
 
-        $cfg = $this->getInfoConfig();
-        $cfg->setNested($player . ".BanPoints", $this->getBanPoints($player) + 1);
-        $cfg->save();
-    }
-
-    public function removeBanPoint(Player|string $player) {
-        $player = $player instanceof Player ? $player->getName() : $player;
-
-        $cfg = $this->getInfoConfig();
-        $cfg->setNested($player . ".BanPoints", $this->getBanPoints($player) - 1);
-        $cfg->save();
+        CurrentProvider::get()->addBanPoint($player);
     }
 
     public function createBanLog(Player|string $player, Player|string $moderator, string $reason, string $time, string $bannedAt) {
@@ -132,27 +104,18 @@ class BanManager {
         $moderator = $moderator instanceof Player ? $moderator->getName() : $moderator;
 
         if (BanSystem::getInstance()->getConfiguration()->isMakeBanMuteLogs()) {
-            $cfg = $this->getBanLogsConfig($player);
-            $cfg->set($bannedAt, [
-                "Moderator" => $moderator,
-                "Reason" => $reason,
-                "Time" => $time,
-                "BannedAt" => $bannedAt
-            ]);
-            $cfg->save();
+            CurrentProvider::get()->pushBanLog($player, $moderator, $reason, $time, $bannedAt);
         }
     }
 
     public function editBan(Player|string $player, string $time, string $type = "add", ?string &$errorMessage = null): bool {
         $player = $player instanceof Player ? $player->getName() : $player;
 
-        $cfg = $this->getConfig();
         $info = $this->getBanInfo($player);
         if ($info !== false) {
             if ($info["Time"] !== "-1") {
                 $newTime = Utils::convertStringToDateFormat($time, new \DateTime($info["Time"]), $type);
-                $cfg->setNested($player . ".Time", $newTime->format("Y-m-d H:i:s"));
-                $cfg->save();
+                CurrentProvider::get()->editBan($player, $newTime->format("Y-m-d H:i:s"));
                 return true;
             } else $errorMessage = "§7The ban of the player §e" . $player . " §7can't be edited!";
         } else $errorMessage = "§7The player §e" . $player . " §7isn't banned!";
@@ -161,45 +124,13 @@ class BanManager {
 
     public function getBanPoints(Player|string $player): int {
         $player = $player instanceof Player ? $player->getName() : $player;
-        return ($this->getInfoConfig()->exists($player) ? $this->getInfoConfig()->getNested($player . ".BanPoints") ?? 0 : 0);
+        return CurrentProvider::get()->getBanPoints($player);
     }
 
     public function getBanInfo(Player|string $player): false|array {
         $player = $player instanceof Player ? $player->getName() : $player;
 
-        if ($this->isBanned($player)) {
-            $type = $this->getConfig()->getNested($player . ".Type");
-            if ($type == 0) return [
-                "Type" => $type,
-                "Moderator" => $this->getConfig()->getNested($player . ".Moderator"),
-                "Id" => $this->getConfig()->getNested($player . ".Id"),
-                "Time" => $this->getConfig()->getNested($player . ".Time"),
-                "BannedAt" => $this->getConfig()->getNested($player . ".BannedAt"),
-            ];
-            else if ($type == 1) return [
-                "Type" => $type,
-                "Moderator" => $this->getConfig()->getNested($player . ".Moderator"),
-                "Reason" => $this->getConfig()->getNested($player . ".Reason"),
-                "Time" => $this->getConfig()->getNested($player . ".Time"),
-                "BannedAt" => $this->getConfig()->getNested($player . ".BannedAt"),
-            ];
-        }
-        return false;
-    }
-
-    public function getBanLogInfo(Player|string $player, string $name): ?array {
-        $player = $player instanceof Player ? $player->getName() : $player;
-
-        $cfg = $this->getBanLogsConfig($player);
-        if ($cfg->exists($name)) {
-            return [
-                "Moderator" => $cfg->getNested($name . ".Moderator"),
-                "Reason" => $cfg->getNested($name . ".Reason"),
-                "Time" => $cfg->getNested($name . ".Time"),
-                "BannedAt" => $cfg->getNested($name . ".BannedAt")
-            ];
-        }
-        return null;
+        return CurrentProvider::get()->getBanInfo($player);
     }
 
     public function isBanId(int $id): bool {
@@ -216,28 +147,15 @@ class BanManager {
 
     public function getBanLogs(Player|string $player): array {
         $player = $player instanceof Player ? $player->getName() : $player;
-        return $this->getBanLogsConfig($player)->getAll();
+        return CurrentProvider::get()->getBanLogs($player);
     }
 
     public function getBans(): array {
-        return $this->getConfig()->getAll();
+        return CurrentProvider::get()->getBans();
     }
 
     public function getBanHandler(): BanHandler {
         return $this->banHandler;
-    }
-
-    private function getBanLogsConfig(Player|string $player): Config {
-        $player = $player instanceof Player ? $player->getName() : $player;
-        return new Config(BanSystem::getInstance()->getConfiguration()->getInfoPath() . "banlogs/" . $player . ".json", 1);
-    }
-
-    private function getConfig(): Config {
-        return new Config(BanSystem::getInstance()->getConfiguration()->getBanPath() . "/bans.json", 1);
-    }
-
-    private function getInfoConfig(): Config {
-        return new Config(BanSystem::getInstance()->getConfiguration()->getInfoPath() . "/players.json", 1);
     }
 
     public static function getInstance(): BanManager {

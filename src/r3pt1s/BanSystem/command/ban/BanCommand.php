@@ -8,6 +8,7 @@ use r3pt1s\BanSystem\manager\ban\BanManager;
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
 use pocketmine\lang\Translatable;
+use r3pt1s\BanSystem\provider\CurrentProvider;
 
 class BanCommand extends Command implements PluginOwned {
 
@@ -19,7 +20,7 @@ class BanCommand extends Command implements PluginOwned {
     public function execute(CommandSender $sender, string $commandLabel, array $args): bool {
         if ($sender->hasPermission($this->getPermission())) {
             if (isset($args[0]) && isset($args[1])) {
-                if ($this->getOwningPlugin()->isPlayerCreated($args[0])) {
+                if (CurrentProvider::get()->isPlayerCreated($args[0])) {
                     if (!BanManager::getInstance()->isBanned($args[0])) {
                         if (is_numeric($args[1])) {
                             if (BanManager::getInstance()->isBanId(intval($args[1]))) {

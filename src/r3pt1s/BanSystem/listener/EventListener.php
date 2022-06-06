@@ -11,11 +11,12 @@ use pocketmine\event\player\PlayerChatEvent;
 use pocketmine\event\player\PlayerCommandPreprocessEvent;
 use pocketmine\event\player\PlayerLoginEvent;
 use pocketmine\Server;
+use r3pt1s\BanSystem\provider\CurrentProvider;
 
 class EventListener implements Listener {
 
     public function onLogin(PlayerLoginEvent $event) {
-        BanSystem::getInstance()->createPlayer($event->getPlayer());
+        CurrentProvider::get()->createPlayer($event->getPlayer()->getName());
         if (BanHandler::getInstance()->handle($event->getPlayer(), $screen)) {
             $event->setKickMessage($screen);
             $event->cancel();
@@ -38,9 +39,11 @@ class EventListener implements Listener {
             $command = Server::getInstance()->getCommandMap()->getCommand(substr($msg[0], 1));
             if ($command !== null) {
                 if (MuteManager::getInstance()->isMuted($player)) {
-                    if (!$player->hasPermission("mute.bypass")) {
-                        $player->sendMessage(BanSystem::getPrefix() . "§7You can't execute the command §e" . substr($msg[0], 1) . "§7!");
-                        $event->cancel();
+                    if (in_array($command->getName(), BanSystem::getInstance()->getConfiguration()->getBlockedCommands())) {
+                        if (!$player->hasPermission("bansystem.mute.bypass")) {
+                            $player->sendMessage(BanSystem::getPrefix() . "§7You can't execute the command §e" . substr($msg[0], 1) . "§7!");
+                            $event->cancel();
+                        }
                     }
                 }
             }
@@ -51,9 +54,11 @@ class EventListener implements Listener {
                         $command = Server::getInstance()->getCommandMap()->getCommand(substr($msg[0], 2));
                         if ($command !== null) {
                             if (MuteManager::getInstance()->isMuted($player)) {
-                                if (!$player->hasPermission("mute.bypass")) {
-                                    $player->sendMessage(BanSystem::getPrefix() . "§7You can't execute the command §e" . substr($msg[0], 2) . "§7!");
-                                    $event->cancel();
+                                if (in_array($command->getName(), BanSystem::getInstance()->getConfiguration()->getBlockedCommands())) {
+                                    if (!$player->hasPermission("bansystem.mute.bypass")) {
+                                        $player->sendMessage(BanSystem::getPrefix() . "§7You can't execute the command §e" . substr($msg[0], 1) . "§7!");
+                                        $event->cancel();
+                                    }
                                 }
                             }
                         }

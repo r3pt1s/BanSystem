@@ -9,6 +9,7 @@ use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
 use pocketmine\lang\Translatable;
 use pocketmine\player\Player;
+use r3pt1s\BanSystem\provider\CurrentProvider;
 
 class BanLogCommand extends Command implements PluginOwned {
 
@@ -21,7 +22,7 @@ class BanLogCommand extends Command implements PluginOwned {
         if ($sender instanceof Player) {
             if ($sender->hasPermission($this->getPermission())) {
                 if (isset($args[0])) {
-                    if ($this->getOwningPlugin()->isPlayerCreated($args[0])) {
+                    if (CurrentProvider::get()->isPlayerCreated($args[0])) {
                         $sender->sendForm(new BanLogsForm($args[0]));
                     } else {
                         $sender->sendMessage(BanSystem::getPrefix() . "§7The player §e" . $args[0] . " §7doesn't exists!");

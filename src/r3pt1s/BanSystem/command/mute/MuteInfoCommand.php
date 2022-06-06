@@ -8,6 +8,7 @@ use r3pt1s\BanSystem\manager\mute\MuteManager;
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
 use pocketmine\lang\Translatable;
+use r3pt1s\BanSystem\provider\CurrentProvider;
 
 class MuteInfoCommand extends Command implements PluginOwned {
 
@@ -19,7 +20,7 @@ class MuteInfoCommand extends Command implements PluginOwned {
     public function execute(CommandSender $sender, string $commandLabel, array $args): bool {
         if ($sender->hasPermission($this->getPermission())) {
             if (isset($args[0])) {
-                if ($this->getOwningPlugin()->isPlayerCreated($args[0])) {
+                if (CurrentProvider::get()->isPlayerCreated($args[0])) {
                     $sender->sendMessage(BanSystem::getPrefix() . "§7Information about §e" . $args[0] . "§7:");
                     $sender->sendMessage(BanSystem::getPrefix() . "§7MutePoints: §e" . MuteManager::getInstance()->getMutesPoints($args[0]));
                     $sender->sendMessage(BanSystem::getPrefix() . "§7Muted: §e" . (MuteManager::getInstance()->isMuted($args[0]) ? "§cYES" : "§aNO"));

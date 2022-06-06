@@ -9,6 +9,7 @@ use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
 use pocketmine\lang\Translatable;
 use pocketmine\Server;
+use r3pt1s\BanSystem\provider\CurrentProvider;
 
 class WarnCommand extends Command implements PluginOwned {
 
@@ -27,13 +28,13 @@ class WarnCommand extends Command implements PluginOwned {
             $player = array_shift($args);
             $reason = trim(implode(" ", $args));
 
-            if ($this->getOwningPlugin()->isPlayerCreated($player)) {
+            if (CurrentProvider::get()->isPlayerCreated($player)) {
                 $sender->sendMessage(BanSystem::getPrefix() . "§7The player §e" . $player . " §7was warned!");
-                WarnManager::getInstance()->warnPlayer($player, $sender->getName(), $reason);
+                WarnManager::getInstance()->warnPlayer($player, $sender->getName(), ($reason == "" ? "No reason provided." : $reason));
 
                 if (($player = Server::getInstance()->getPlayerByPrefix($player)) !== null) {
                     $player->sendMessage(BanSystem::getPrefix() . "§cYou have been warned!");
-                    $player->sendMessage(BanSystem::getPrefix() . "§7Reason: §e" . $reason);
+                    $player->sendMessage(BanSystem::getPrefix() . "§7Reason: §e" . ($reason == "" ? "No reason provided." : $reason));
                 }
             } else {
                 $sender->sendMessage(BanSystem::getPrefix() . "§7The player §e" . $args[0] . " §7doesn't exists!");

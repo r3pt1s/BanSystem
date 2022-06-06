@@ -30,12 +30,12 @@ class KickCommand extends Command implements PluginOwned {
             if (($player = Server::getInstance()->getPlayerByPrefix($player)) !== null) {
                 $sender->sendMessage(BanSystem::getPrefix() . "§7The player §e" . $player->getName() . " §7was kicked!");
                 $kickScreen = "§8» §cYou were kicked! §8«";
-                $kickScreen .= "\n§8» §cReason: §e" . $reason;
+                $kickScreen .= "\n§8» §cReason: §e" . ($reason == "" ? "No reason provided." : $reason);
                 $player->kick($kickScreen);
 
                 NotifyManager::sendNotify(
                     BanSystem::getPrefix() . "§e" . $player->getName() . " §7was kicked by §c" . $sender->getName() . "§7!\n" .
-                    BanSystem::getPrefix() . "§7Reason: §e" . $reason
+                    BanSystem::getPrefix() . "§7Reason: §e" . ($reason == "" ? "No reason provided." : $reason)
                 );
             } else {
                 $sender->sendMessage(BanSystem::getPrefix() . "§7The player §e" . $args[0] . " §7isn't online!");

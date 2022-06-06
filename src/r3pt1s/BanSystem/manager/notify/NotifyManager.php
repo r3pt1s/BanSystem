@@ -2,10 +2,9 @@
 
 namespace r3pt1s\BanSystem\manager\notify;
 
-use r3pt1s\BanSystem\BanSystem;
 use pocketmine\player\Player;
 use pocketmine\Server;
-use pocketmine\utils\Config;
+use r3pt1s\BanSystem\provider\CurrentProvider;
 
 class NotifyManager {
 
@@ -26,18 +25,12 @@ class NotifyManager {
     public function setNotify(Player|string $player, bool $v) {
         $player = $player instanceof Player ? $player->getName() : $player;
 
-        $cfg = $this->getInfoConfig();
-        $cfg->setNested($player . ".Notify", $v);
-        $cfg->save();
+        CurrentProvider::get()->changeNotifyState($player, $v);
     }
 
     public function receiveNotify(Player|string $player): bool {
         $player = $player instanceof Player ? $player->getName() : $player;
-        return ($this->getInfoConfig()->exists($player) ? $this->getInfoConfig()->getNested($player . ".Notify") ?? false : false);
-    }
-
-    private function getInfoConfig(): Config {
-        return new Config(BanSystem::getInstance()->getConfiguration()->getInfoPath() . "/players.json", 1);
+        return CurrentProvider::get()->getNotifyState($player);
     }
 
     public static function getInstance(): NotifyManager {

@@ -5,6 +5,7 @@ namespace r3pt1s\BanSystem\command\mute;
 use pocketmine\plugin\PluginOwned;
 use r3pt1s\BanSystem\BanSystem;
 use r3pt1s\BanSystem\manager\mute\MuteManager;
+use r3pt1s\BanSystem\provider\CurrentProvider;
 use r3pt1s\BanSystem\utils\Utils;
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
@@ -20,7 +21,7 @@ class TempMuteCommand extends Command implements PluginOwned {
     public function execute(CommandSender $sender, string $commandLabel, array $args): bool {
         if ($sender->hasPermission($this->getPermission())) {
             if (isset($args[0]) && isset($args[1]) && isset($args[2])) {
-                if ($this->getOwningPlugin()->isPlayerCreated($args[0])) {
+                if (CurrentProvider::get()->isPlayerCreated($args[0])) {
                     if (!MuteManager::getInstance()->isMuted($args[0])) {
                         if (Utils::convertStringToDateFormat($args[2]) === null) {
                             $sender->sendMessage(BanSystem::getPrefix() . "§cPlease provide a valid duration format! Example: 1d");

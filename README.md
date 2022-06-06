@@ -1,6 +1,10 @@
 # BanSystem
 A system for pocketmine servers.
 
+## Changes
+- Added MySQL Support (Provider)
+- Fixxed some stupid bugs
+
 ## Integrated systems 
 - BanSystem to ban players
 - MuteSystem to mute players

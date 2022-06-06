@@ -8,7 +8,7 @@ class Utils {
         if ($format == "") return null;
         $result = ($time === null ? new \DateTime("now") : $time);
         $parts = str_split($format);
-        $timeUnits = ["y" => "year", "m" => "month", "w" => "week", "d" => "day", "h" => "hour", "M" => "minute", "i" => "minute", "s" => "second"];
+        $timeUnits = ["y" => "year", "M" => "month", "w" => "week", "d" => "day", "h" => "hour", "m" => "minute", "i" => "minute", "s" => "second"];
         $i = -1;
         $changes = false;
 

@@ -17,7 +17,7 @@ class MuteHandler {
 
     public function handle(Player $player, ?string &$muteScreen = null): bool {
         if (MuteManager::getInstance()->isMuted($player)) {
-            if (!$player->hasPermission("mute.bypass")) {
+            if (!$player->hasPermission("bansystem.mute.bypass")) {
                 if (!MuteManager::getInstance()->isMuteExpired($player)) {
                     $info = MuteManager::getInstance()->getMuteInfo($player);
                     if ($info !== false) {

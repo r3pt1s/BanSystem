@@ -17,7 +17,7 @@ class BanHandler {
 
     public function handle(Player $player, ?string &$kickScreen = null): bool {
         if (BanManager::getInstance()->isBanned($player)) {
-            if (!$player->hasPermission("ban.bypass")) {
+            if (!$player->hasPermission("bansystem.ban.bypass")) {
                 if (!BanManager::getInstance()->isBanExpired($player)) {
                     $info = BanManager::getInstance()->getBanInfo($player);
                     if ($info !== false) {
