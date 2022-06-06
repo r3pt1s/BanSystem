@@ -10,7 +10,7 @@ class NotifyManager {
 
     public static function sendNotify(string $message) {
         foreach (Server::getInstance()->getOnlinePlayers() as $player) {
-            if ($player->hasPermission("notify.receive") && self::getInstance()->receiveNotify($player)) {
+            if ($player->hasPermission("bansystem.notify.receive") && self::getInstance()->receiveNotify($player)) {
                 $player->sendMessage($message);
             }
         }
