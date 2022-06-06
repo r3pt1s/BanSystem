@@ -1,0 +1,11 @@
+--- # Poggit-CI Manifest. Open the CI at https://poggit.pmmp.io/ci/r3pt1s/BanSystem
+build-by-default: true
+branches:
+- main
+projects:
+  BanSystem:
+    path: ""
+    libs:
+      - src: dktapps-pm-pl/pmforms/pmforms
+        version: ^2.0.0
+...
