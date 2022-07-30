@@ -43,7 +43,7 @@ use pocketmine\utils\Config;
 class BanSystem extends PluginBase {
 
     const NO_PERMS = "§cYou do not have the permission to use the command!";
-    public static float $VERSION = 2.0;
+    public static float $VERSION = 2.1;
 
     private static self $instance;
     private Configuration $configuration;
