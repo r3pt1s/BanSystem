@@ -2,6 +2,7 @@
 
 namespace r3pt1s\BanSystem\manager\mute;
 
+use pocketmine\command\CommandSender;
 use r3pt1s\BanSystem\BanSystem;
 use r3pt1s\BanSystem\handler\MuteHandler;
 use r3pt1s\BanSystem\manager\notify\NotifyManager;
@@ -23,9 +24,9 @@ class MuteManager {
         $this->muteHandler = new MuteHandler();
     }
 
-    public function mutePlayer(Player|string $player, Player|string $moderator, int $id) {
+    public function mutePlayer(Player|string $player, CommandSender|string $moderator, int $id) {
         $player = $player instanceof Player ? $player->getName() : $player;
-        $moderator = $moderator instanceof Player ? $moderator->getName() : $moderator;
+        $moderator = $moderator instanceof CommandSender ? $moderator->getName() : $moderator;
 
         $idData = BanSystem::getInstance()->getConfiguration()->getMuteIds()[$id];
         $mutedAt = (new \DateTime("now"))->format("Y-m-d H:i:s");
@@ -44,9 +45,9 @@ class MuteManager {
         );
     }
 
-    public function tempMutePlayer(Player|string $player, Player|string $moderator, string $reason, string $duration) {
+    public function tempMutePlayer(Player|string $player, CommandSender|string $moderator, string $reason, string $duration) {
         $player = $player instanceof Player ? $player->getName() : $player;
-        $moderator = $moderator instanceof Player ? $moderator->getName() : $moderator;
+        $moderator = $moderator instanceof CommandSender ? $moderator->getName() : $moderator;
 
         $mutedAt = (new \DateTime("now"))->format("Y-m-d H:i:s");
         $time = ($duration== "-1" ? "-1" : Utils::convertStringToDateFormat($duration)->format("Y-m-d H:i:s"));
@@ -64,9 +65,9 @@ class MuteManager {
         );
     }
 
-    public function unmutePlayer(Player|string $player, Player|string $moderator = "automatic") {
+    public function unmutePlayer(Player|string $player, CommandSender|string $moderator = "automatic") {
         $player = $player instanceof Player ? $player->getName() : $player;
-        $moderator = $moderator instanceof Player ? $moderator->getName() : $moderator;
+        $moderator = $moderator instanceof CommandSender ? $moderator->getName() : $moderator;
 
         CurrentProvider::get()->removeMute($player);
 
@@ -98,9 +99,9 @@ class MuteManager {
         CurrentProvider::get()->addMutePoint($player);
     }
 
-    public function createMuteLog(Player|string $player, Player|string $moderator, string $reason, string $time, string $mutedAt) {
+    public function createMuteLog(Player|string $player, CommandSender|string $moderator, string $reason, string $time, string $mutedAt) {
         $player = $player instanceof Player ? $player->getName() : $player;
-        $moderator = $moderator instanceof Player ? $moderator->getName() : $moderator;
+        $moderator = $moderator instanceof CommandSender ? $moderator->getName() : $moderator;
 
         if (BanSystem::getInstance()->getConfiguration()->isMakeBanMuteLogs()) {
             CurrentProvider::get()->pushMuteLog($player, $moderator, $reason, $time, $mutedAt);

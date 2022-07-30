@@ -2,6 +2,7 @@
 
 namespace r3pt1s\BanSystem\manager\ban;
 
+use pocketmine\command\CommandSender;
 use r3pt1s\BanSystem\BanSystem;
 use r3pt1s\BanSystem\handler\BanHandler;
 use r3pt1s\BanSystem\manager\notify\NotifyManager;
@@ -23,9 +24,9 @@ class BanManager {
         $this->banHandler = new BanHandler();
     }
 
-    public function banPlayer(Player|string $player, Player|string $moderator, int $id) {
+    public function banPlayer(Player|string $player, CommandSender|string $moderator, int $id) {
         $player = $player instanceof Player ? $player->getName() : $player;
-        $moderator = $moderator instanceof Player ? $moderator->getName() : $moderator;
+        $moderator = $moderator instanceof CommandSender ? $moderator->getName() : $moderator;
 
         $idData = BanSystem::getInstance()->getConfiguration()->getBanIds()[$id];
         $bannedAt = (new \DateTime("now"))->format("Y-m-d H:i:s");
@@ -44,9 +45,9 @@ class BanManager {
         );
     }
 
-    public function tempBanPlayer(Player|string $player, Player|string $moderator, string $reason, string $duration) {
+    public function tempBanPlayer(Player|string $player, CommandSender|string $moderator, string $reason, string $duration) {
         $player = $player instanceof Player ? $player->getName() : $player;
-        $moderator = $moderator instanceof Player ? $moderator->getName() : $moderator;
+        $moderator = $moderator instanceof CommandSender ? $moderator->getName() : $moderator;
 
         $bannedAt = (new \DateTime("now"))->format("Y-m-d H:i:s");
         $time = ($duration== "-1" ? "-1" : Utils::convertStringToDateFormat($duration)->format("Y-m-d H:i:s"));
@@ -64,9 +65,9 @@ class BanManager {
         );
     }
 
-    public function unbanPlayer(Player|string $player, Player|string $moderator = "automatic") {
+    public function unbanPlayer(Player|string $player, CommandSender|string $moderator = "automatic") {
         $player = $player instanceof Player ? $player->getName() : $player;
-        $moderator = $moderator instanceof Player ? $moderator->getName() : $moderator;
+        $moderator = $moderator instanceof CommandSender ? $moderator->getName() : $moderator;
 
         CurrentProvider::get()->removeBan($player);
 
@@ -99,9 +100,9 @@ class BanManager {
         CurrentProvider::get()->addBanPoint($player);
     }
 
-    public function createBanLog(Player|string $player, Player|string $moderator, string $reason, string $time, string $bannedAt) {
+    public function createBanLog(Player|string $player, CommandSender|string $moderator, string $reason, string $time, string $bannedAt) {
         $player = $player instanceof Player ? $player->getName() : $player;
-        $moderator = $moderator instanceof Player ? $moderator->getName() : $moderator;
+        $moderator = $moderator instanceof CommandSender ? $moderator->getName() : $moderator;
 
         if (BanSystem::getInstance()->getConfiguration()->isMakeBanMuteLogs()) {
             CurrentProvider::get()->pushBanLog($player, $moderator, $reason, $time, $bannedAt);

@@ -2,6 +2,7 @@
 
 namespace r3pt1s\BanSystem\manager\warn;
 
+use pocketmine\command\CommandSender;
 use r3pt1s\BanSystem\BanSystem;
 use r3pt1s\BanSystem\manager\ban\BanManager;
 use r3pt1s\BanSystem\manager\mute\MuteManager;
@@ -17,9 +18,9 @@ class WarnManager {
         self::$instance = $this;
     }
 
-    public function warnPlayer(Player|string $player, Player|string $moderator, string $reason) {
+    public function warnPlayer(Player|string $player, CommandSender|string $moderator, string $reason) {
         $player = $player instanceof Player ? $player->getName() : $player;
-        $moderator = $moderator instanceof Player ? $moderator->getName() : $moderator;
+        $moderator = $moderator instanceof CommandSender ? $moderator->getName() : $moderator;
 
         CurrentProvider::get()->pushWarn($player, $reason, $moderator, (new \DateTime("now"))->format("Y-m-d H:i:s"));
 
