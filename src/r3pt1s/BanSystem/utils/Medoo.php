@@ -25,7 +25,7 @@ use InvalidArgumentException;
 /**
  * The Medoo raw object.
  */
-class Raw
+class Medoo
 {
     /**
      * The array of mapping data for the raw string.
