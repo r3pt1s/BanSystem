@@ -14,19 +14,19 @@ mysqlSettings:
 prefix: "§c§lBanSystem §r§8» §7"
 # Path where the mutes were saved
 # Example = /home/Database/Mute/
-# Default = plugin_data/BanManager/
+# Default = plugin_data/BanSystem/
 mute-path: "default"
 # Path where the bans were saved
 # Example = /home/Database/Ban/
-# Default = plugin_data/BanManager/
+# Default = plugin_data/BanSystem/
 ban-path: "default"
 # Path where the warns were saved
 # Example = /home/Database/Warn/
-# Default = plugin_data/BanManager/
+# Default = plugin_data/BanSystem/
 warn-path: "default"
 # Path where the mute and ban points from the players were saved
 # Example = /home/Database/PlayerInfo/
-# Default = plugin_data/BanManager/
+# Default = plugin_data/BanSystem/
 info-path: "default"
 # Max Warns
 max-warns: 3
