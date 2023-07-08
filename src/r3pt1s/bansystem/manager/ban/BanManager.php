@@ -12,6 +12,7 @@ use r3pt1s\bansystem\event\ban\PlayerUnbanEvent;
 use r3pt1s\bansystem\handler\BanHandler;
 use r3pt1s\bansystem\handler\IHandler;
 use r3pt1s\bansystem\manager\notify\NotifyManager;
+use r3pt1s\bansystem\util\Configuration;
 
 class BanManager {
     use SingletonTrait;
@@ -48,7 +49,7 @@ class BanManager {
         }
 
         BanSystem::getInstance()->getProvider()->addBan($ban);
-        BanSystem::getInstance()->getProvider()->addBanPoint($ban->getPlayer());
+        if (Configuration::getInstance()->isMakeBanMuteLogs()) BanSystem::getInstance()->getProvider()->addBanPoint($ban->getPlayer());
         BanSystem::getInstance()->getProvider()->addBanLog($ban);
 
         return BanSystem::SUCCESS;

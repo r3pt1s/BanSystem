@@ -12,6 +12,7 @@ use r3pt1s\bansystem\event\mute\PlayerUnmuteEvent;
 use r3pt1s\bansystem\handler\IHandler;
 use r3pt1s\bansystem\handler\MuteHandler;
 use r3pt1s\bansystem\manager\notify\NotifyManager;
+use r3pt1s\bansystem\util\Configuration;
 
 class MuteManager {
     use SingletonTrait;
@@ -49,7 +50,7 @@ class MuteManager {
 
         BanSystem::getInstance()->getProvider()->addMute($mute);
         BanSystem::getInstance()->getProvider()->addMutePoint($mute->getPlayer());
-        BanSystem::getInstance()->getProvider()->addMuteLog($mute);
+        if (Configuration::getInstance()->isMakeBanMuteLogs()) BanSystem::getInstance()->getProvider()->addMuteLog($mute);
 
         return BanSystem::SUCCESS;
     }
