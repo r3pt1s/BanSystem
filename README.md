@@ -41,12 +41,12 @@ A system for pocketmine servers.
 | `/notify`                                     | Enable or disable notifications                        | bansystem.command.notify       |
 
 ## Permissions
-| Permission                        | Description            |
-|-----------------------------------|------------------------|
-| bansystem.bypass.ban              | Bypass a ban           |
-| bansystem.bypass.mute             | Bypass a mute          |
-| bansystem.bypass.kick             | Bypass a kick          |
-| bansystem.receive.notifications   | Receive notifications  |
+| Permission               | Description            |
+|--------------------------|------------------------|
+| bansystem.bypass.ban     | Bypass a ban           |
+| bansystem.bypass.mute    | Bypass a mute          |
+| bansystem.bypass.kick    | Bypass a kick          |
+| bansystem.receive.notify | Receive notifications  |
 
 ## Configurable 
 - Max warnings
