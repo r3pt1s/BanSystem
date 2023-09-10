@@ -3,7 +3,7 @@
 namespace r3pt1s\bansystem\command\mute;
 
 use pocketmine\plugin\PluginOwned;
-use r3pt1s\BanSystem\BanSystem;
+use r3pt1s\bansystem\BanSystem;
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
 use pocketmine\player\Player;

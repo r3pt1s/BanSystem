@@ -3,8 +3,8 @@
 namespace r3pt1s\bansystem\command\ban;
 
 use pocketmine\plugin\PluginOwned;
-use r3pt1s\BanSystem\BanSystem;
-use r3pt1s\BanSystem\form\ban\BanLogsForm;
+use r3pt1s\bansystem\BanSystem;
+use r3pt1s\bansystem\form\ban\BanLogsForm;
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
 use pocketmine\player\Player;

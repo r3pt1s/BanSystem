@@ -3,11 +3,10 @@
 namespace r3pt1s\bansystem\command\notify;
 
 use pocketmine\plugin\PluginOwned;
-use r3pt1s\BanSystem\BanSystem;
-use r3pt1s\BanSystem\manager\notify\NotifyManager;
+use r3pt1s\bansystem\BanSystem;
+use r3pt1s\bansystem\manager\notify\NotifyManager;
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
-use pocketmine\lang\Translatable;
 use pocketmine\player\Player;
 
 class NotifyCommand extends Command implements PluginOwned {
