@@ -63,9 +63,10 @@ class EventListener implements Listener {
 
             if ($command !== null) {
                 $anyAliasBlocked = in_array($command->getName(), Configuration::getInstance()->getBlockedCommands());
-                if (!$anyAliasBlocked) foreach (array_filter($command->getAliases(), fn(string $alias) => in_array($alias, Configuration::getInstance()->getBlockedCommands())) as $alias) {
-                    $anyAliasBlocked = true;
-                    break;
+                if (!$anyAliasBlocked) {
+                    if (count(array_filter($command->getAliases(), fn(string $alias) => in_array($alias, Configuration::getInstance()->getBlockedCommands()))) > 0) {
+                        $anyAliasBlocked = true;
+                    }
                 }
 
                 if ($anyAliasBlocked) {

@@ -40,13 +40,12 @@ class BanManager {
 
         if ($automatic) {
             NotifyManager::getInstance()->sendNotification(BanSystem::getPrefix() . "§e" . $ban->getPlayer() . " §7has been automatically §cbanned§7.");
-            NotifyManager::getInstance()->sendNotification(BanSystem::getPrefix() . "§7Reason: §e" . $ban->getReason());
-            NotifyManager::getInstance()->sendNotification(BanSystem::getPrefix() . "§7Until: §e" . ($ban->getExpire()?->format("Y-m-d H:i:s") ?? "§l§cPERMANENTLY"));
         } else {
             NotifyManager::getInstance()->sendNotification(BanSystem::getPrefix() . "§e" . $ban->getPlayer() . " §7has been §cbanned §7by §e" . $ban->getModerator() . "§7.");
-            NotifyManager::getInstance()->sendNotification(BanSystem::getPrefix() . "§7Reason: §e" . $ban->getReason());
-            NotifyManager::getInstance()->sendNotification(BanSystem::getPrefix() . "§7Until: §e" . ($ban->getExpire()?->format("Y-m-d H:i:s") ?? "§l§cPERMANENTLY"));
         }
+
+        NotifyManager::getInstance()->sendNotification(BanSystem::getPrefix() . "§7Reason: §e" . $ban->getReason());
+        NotifyManager::getInstance()->sendNotification(BanSystem::getPrefix() . "§7Until: §e" . ($ban->getExpire()?->format("Y-m-d H:i:s") ?? "§l§cPERMANENTLY"));
 
         BanSystem::getInstance()->getProvider()->addBan($ban);
         if (Configuration::getInstance()->isMakeBanMuteLogs()) BanSystem::getInstance()->getProvider()->addBanPoint($ban->getPlayer());

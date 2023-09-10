@@ -2,9 +2,6 @@
 
 namespace r3pt1s\bansystem\util;
 
-use pocketmine\utils\Config;
-use r3pt1s\bansystem\BanSystem;
-
 class Utils {
 
     public static function convertStringToDateFormat(string $format, ?\DateTime $time = null, string $type = "add"): ?\DateTime {

@@ -40,13 +40,11 @@ class MuteManager {
 
         if ($automatic) {
             NotifyManager::getInstance()->sendNotification(BanSystem::getPrefix() . "§e" . $mute->getPlayer() . " §7has been automatically §cmuted§7.");
-            NotifyManager::getInstance()->sendNotification(BanSystem::getPrefix() . "§7Reason: §e" . $mute->getReason());
-            NotifyManager::getInstance()->sendNotification(BanSystem::getPrefix() . "§7Until: §e" . ($mute->getExpire()?->format("Y-m-d H:i:s") ?? "§l§cPERMANENTLY"));
         } else {
             NotifyManager::getInstance()->sendNotification(BanSystem::getPrefix() . "§e" . $mute->getPlayer() . " §7has been §cmuted §7by §e" . $mute->getModerator() . "§7.");
-            NotifyManager::getInstance()->sendNotification(BanSystem::getPrefix() . "§7Reason: §e" . $mute->getReason());
-            NotifyManager::getInstance()->sendNotification(BanSystem::getPrefix() . "§7Until: §e" . ($mute->getExpire()?->format("Y-m-d H:i:s") ?? "§l§cPERMANENTLY"));
         }
+        NotifyManager::getInstance()->sendNotification(BanSystem::getPrefix() . "§7Reason: §e" . $mute->getReason());
+        NotifyManager::getInstance()->sendNotification(BanSystem::getPrefix() . "§7Until: §e" . ($mute->getExpire()?->format("Y-m-d H:i:s") ?? "§l§cPERMANENTLY"));
 
         BanSystem::getInstance()->getProvider()->addMute($mute);
         BanSystem::getInstance()->getProvider()->addMutePoint($mute->getPlayer());

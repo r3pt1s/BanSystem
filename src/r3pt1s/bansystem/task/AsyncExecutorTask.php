@@ -2,7 +2,6 @@
 
 namespace r3pt1s\bansystem\task;
 
-use JetBrains\PhpStorm\Pure;
 use pocketmine\scheduler\AsyncTask;
 use pocketmine\thread\NonThreadSafeValue;
 use r3pt1s\bansystem\util\Configuration;
