@@ -48,8 +48,8 @@ class BanManager {
         NotifyManager::getInstance()->sendNotification(BanSystem::getPrefix() . "§7Until: §e" . ($ban->getExpire()?->format("Y-m-d H:i:s") ?? "§l§cPERMANENTLY"));
 
         BanSystem::getInstance()->getProvider()->addBan($ban);
-        if (Configuration::getInstance()->isMakeBanMuteLogs()) BanSystem::getInstance()->getProvider()->addBanPoint($ban->getPlayer());
-        BanSystem::getInstance()->getProvider()->addBanLog($ban);
+        BanSystem::getInstance()->getProvider()->addBanPoint($ban->getPlayer());
+        if (Configuration::getInstance()->isMakeBanMuteLogs()) BanSystem::getInstance()->getProvider()->addBanLog($ban);
 
         return BanSystem::SUCCESS;
     }
