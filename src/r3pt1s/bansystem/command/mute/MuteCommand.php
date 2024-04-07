@@ -28,6 +28,11 @@ class MuteCommand extends Command implements PluginOwned {
             $target = $args[0];
             $muteId = $args[1];
 
+            if ($target == $sender->getName()) {
+                $sender->sendMessage(BanSystem::getPrefix() . "§cYou can't mute yourself!");
+                return true;
+            }
+
             BanSystem::getInstance()->getProvider()->checkPlayer($target)->onCompletion(
                 function(bool $exists) use($sender, $target, $muteId): void {
                     if (!$exists) {

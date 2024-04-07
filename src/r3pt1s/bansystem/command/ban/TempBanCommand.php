@@ -28,6 +28,11 @@ class TempBanCommand extends Command implements PluginOwned {
             $reason = $args[1];
             $duration = $args[2];
 
+            if ($target == $sender->getName()) {
+                $sender->sendMessage(BanSystem::getPrefix() . "§cYou can't ban yourself!");
+                return true;
+            }
+
             BanSystem::getInstance()->getProvider()->checkPlayer($target)->onCompletion(
                 function(bool $exists) use($sender, $target, $reason, $duration): void {
                     if (!$exists) {

@@ -28,6 +28,11 @@ class BanCommand extends Command implements PluginOwned {
             $target = $args[0];
             $banId = $args[1];
 
+            if ($target == $sender->getName()) {
+                $sender->sendMessage(BanSystem::getPrefix() . "§cYou can't ban yourself!");
+                return true;
+            }
+
             BanSystem::getInstance()->getProvider()->checkPlayer($target)->onCompletion(
                 function(bool $exists) use($sender, $target, $banId): void {
                     if (!$exists) {
