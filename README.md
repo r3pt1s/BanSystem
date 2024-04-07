@@ -1,4 +1,4 @@
-# [BanSystem](poggit.pmmp.io/p/BanSystem/) [![](https://poggit.pmmp.io/shield.state/BanSystem)](https://poggit.pmmp.io/p/BanSystem)
+# [BanSystem](https://poggit.pmmp.io/p/BanSystem/) [![](https://poggit.pmmp.io/shield.state/BanSystem)](https://poggit.pmmp.io/p/BanSystem)
 A ban system for pocketmine servers.
 
 ## IMPORTANT NOTE
