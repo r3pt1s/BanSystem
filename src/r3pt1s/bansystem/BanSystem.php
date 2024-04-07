@@ -143,8 +143,9 @@ class BanSystem extends PluginBase {
         if ($player->hasPermission("bansystem.bypass.mute")) return self::FAILED_CANT;
 
         $reason = "§8» §cYou have been §lkicked §r§8«\n§8» §7Reason: §e" . ($ev->getReason() == "" ? "No reason provided" : $ev->getReason());
-        if ($this->usingStarGate) StarGateAtlantis::getInstance()->
-        $player->kick($reason);
+        if ($this->usingStarGate) StarGateAtlantis::getInstance()->getDefaultClient()->sendPacket(PlayerKickPacket::create($player->getName(), $reason));
+        else $player->kick($reason);
+
         NotifyManager::getInstance()->sendNotification(BanSystem::getPrefix() . "§e" . $player->getName() . " §7has been §ckicked §7by §e" . $moderator->getName() . "§7.");
         NotifyManager::getInstance()->sendNotification(BanSystem::getPrefix() . "§7Reason: §e" . ($ev->getReason() == "" ? "No reason provided" : $ev->getReason()));
 
