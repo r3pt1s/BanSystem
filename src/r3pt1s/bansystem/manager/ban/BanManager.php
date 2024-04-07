@@ -5,6 +5,7 @@ namespace r3pt1s\bansystem\manager\ban;
 use alemiz\sga\StarGateAtlantis;
 use pocketmine\command\CommandSender;
 use pocketmine\player\Player;
+use pocketmine\Server;
 use pocketmine\utils\SingletonTrait;
 use r3pt1s\bansystem\BanSystem;
 use r3pt1s\bansystem\event\ban\PlayerBanEditEvent;
@@ -14,6 +15,7 @@ use r3pt1s\bansystem\handler\BanHandler;
 use r3pt1s\bansystem\handler\IHandler;
 use r3pt1s\bansystem\manager\notify\NotifyManager;
 use r3pt1s\bansystem\network\BansSyncPacket;
+use r3pt1s\bansystem\network\PlayerKickPacket;
 use r3pt1s\bansystem\util\Configuration;
 
 class BanManager {
@@ -44,7 +46,12 @@ class BanManager {
         if ($ev->isCancelled()) return BanSystem::FAILED_CANCELLED;
 
         $this->bans[$ban->getPlayer()] = $ban;
-        if (BanSystem::getInstance()->isUsingStarGate()) StarGateAtlantis::getInstance()->getDefaultClient()->sendPacket(BansSyncPacket::create());
+        if (BanSystem::getInstance()->isUsingStarGate()) {
+            StarGateAtlantis::getInstance()->getDefaultClient()->sendPacket(BansSyncPacket::create());
+            StarGateAtlantis::getInstance()->getDefaultClient()->sendPacket(PlayerKickPacket::create($ban->getPlayer(), $this->getBanHandler()->handle($ban->getPlayer())));
+        } else {
+            if (($player = Server::getInstance()->getPlayerExact($ban->getPlayer())) !== null) $player->kick($this->getBanHandler()->handle($player->getName()));
+        }
 
         if ($automatic) {
             NotifyManager::getInstance()->sendNotification(BanSystem::getPrefix() . "§e" . $ban->getPlayer() . " §7has been automatically §cbanned§7.");

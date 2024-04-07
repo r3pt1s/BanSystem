@@ -19,7 +19,7 @@ class EventListener implements Listener {
 
     public function onLogin(PlayerLoginEvent $event): void {
         $player = $event->getPlayer();
-        if (($screen = BanManager::getInstance()->getBanHandler()->handle($player)) !== null) {
+        if (($screen = BanManager::getInstance()->getBanHandler()->handle($player->getName())) !== null && !$player->hasPermission("bansystem.bypass.ban")) {
             $event->setKickMessage($screen);
             $event->cancel();
         }
@@ -44,7 +44,7 @@ class EventListener implements Listener {
 
     public function onChat(PlayerChatEvent $event): void {
         $player = $event->getPlayer();
-        if (($screen = MuteManager::getInstance()->getMuteHandler()->handle($player)) !== null) {
+        if (($screen = MuteManager::getInstance()->getMuteHandler()->handle($player)) !== null && !$player->hasPermission("bansystem.bypass.mute")) {
             $player->sendMessage($screen);
             $event->cancel();
         }

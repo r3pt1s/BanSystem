@@ -2,15 +2,13 @@
 
 namespace r3pt1s\bansystem\handler;
 
-use pocketmine\player\Player;
 use r3pt1s\bansystem\BanSystem;
 use r3pt1s\bansystem\manager\mute\MuteManager;
 use r3pt1s\bansystem\util\Utils;
 
 class MuteHandler implements IHandler {
 
-    public function handle(Player $player): ?string {
-        if ($player->hasPermission("bansystem.bypass.ban")) return null;
+    public function handle(string $player): ?string {
         if (!MuteManager::getInstance()->isMuted($player)) return null;
         if (($mute = MuteManager::getInstance()->getMute($player)) !== null) {
             $screen = BanSystem::getPrefix() . "§cYou have been §lmuted§r§c!\n";

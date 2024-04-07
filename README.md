@@ -1,6 +1,9 @@
 # BanSystem
 A system for pocketmine servers.
 
+## IMPORTANT NOTE
+If you are new to the version **3.1.0** of the BanSystem, please delete your **config.yml** file in the **plugin_data/BanSystem** folder.
+
 ## Integrated systems
 | System               | Description           |
 |----------------------|-----------------------|
