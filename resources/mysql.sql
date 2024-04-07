@@ -53,7 +53,7 @@
         -- # :moderator string
         -- # :reason string
         -- # :time string
-        -- # :expire string
+        -- # :expire string 0
         INSERT INTO bans(player, moderator, reason, time, expire)
         VALUES (:player, :moderator, :reason, :time, :expire);
     -- #}
@@ -62,7 +62,7 @@
         -- # :moderator string
         -- # :reason string
         -- # :time string
-        -- # :expire string
+        -- # :expire string 0
         INSERT INTO banlogs(player, moderator, reason, time, expire)
         VALUES (:player, :moderator, :reason, :time, :expire);
     -- #}
@@ -76,7 +76,7 @@
     -- #}
     -- #{ edit
         -- # :player string
-        -- # :newTime string null
+        -- # :newTime string 0
         UPDATE bans SET expire = :newTime WHERE player = :player;
     -- #}
     -- #{ get
@@ -98,7 +98,7 @@
         -- # :moderator string
         -- # :reason string
         -- # :time string
-        -- # :expire string
+        -- # :expire string 0
         INSERT INTO mutes(player, moderator, reason, time, expire)
         VALUES (:player, :moderator, :reason, :time, :expire);
     -- #}
@@ -107,7 +107,7 @@
         -- # :moderator string
         -- # :reason string
         -- # :time string
-        -- # :expire string
+        -- # :expire string 0
         INSERT INTO mutelogs(player, moderator, reason, time, expire)
         VALUES (:player, :moderator, :reason, :time, :expire);
     -- #}
@@ -121,7 +121,7 @@
     -- #}
     -- #{ edit
         -- # :player string
-        -- # :newTime string
+        -- # :newTime string 0
         UPDATE mutes SET expire = :newTime WHERE player = :player;
     -- #}
     -- #{ get
