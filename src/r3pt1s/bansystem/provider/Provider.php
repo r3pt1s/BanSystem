@@ -9,6 +9,8 @@ use r3pt1s\bansystem\manager\mute\Mute;
 
 interface Provider {
 
+    public function load(): void;
+
     public function addBan(Ban $ban): void;
 
     public function addBanLog(Ban $ban): void;

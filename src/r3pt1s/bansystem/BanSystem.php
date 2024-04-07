@@ -2,12 +2,14 @@
 
 namespace r3pt1s\bansystem;
 
+use alemiz\sga\StarGateAtlantis;
 use pocketmine\command\CommandSender;
 use pocketmine\permission\DefaultPermissions;
 use pocketmine\permission\Permission;
 use pocketmine\permission\PermissionManager;
 use pocketmine\player\Player;
 use pocketmine\plugin\PluginBase;
+use pocketmine\scheduler\ClosureTask;
 use pocketmine\utils\Config;
 use pocketmine\utils\SingletonTrait;
 use r3pt1s\bansystem\command\ban\BanCommand;
@@ -37,11 +39,14 @@ use r3pt1s\bansystem\manager\ban\BanManager;
 use r3pt1s\bansystem\manager\mute\MuteManager;
 use r3pt1s\bansystem\manager\notify\NotifyManager;
 use r3pt1s\bansystem\manager\warn\WarnManager;
+use r3pt1s\bansystem\network\BansSyncPacket;
+use r3pt1s\bansystem\network\BanSystemPackets;
+use r3pt1s\bansystem\network\MutesSyncPacket;
+use r3pt1s\bansystem\network\NotifyPacket;
+use r3pt1s\bansystem\network\PlayerKickPacket;
 use r3pt1s\bansystem\provider\JSONProvider;
 use r3pt1s\bansystem\provider\MySQLProvider;
 use r3pt1s\bansystem\provider\Provider;
-use r3pt1s\bansystem\task\CheckTask;
-use r3pt1s\bansystem\task\PlayerKickTask;
 use r3pt1s\bansystem\util\Configuration;
 
 class BanSystem extends PluginBase {
@@ -65,6 +70,7 @@ class BanSystem extends PluginBase {
     private MuteManager $muteManager;
     private WarnManager $warnManager;
     private NotifyManager $notifyManager;
+    private bool $usingStarGate = false;
 
     protected function onEnable(): void {
         self::setInstance($this);
@@ -77,6 +83,7 @@ class BanSystem extends PluginBase {
             "mysql" => new MySQLProvider(),
             default => new JSONProvider()
         };
+        $this->provider->load();
 
         $this->banManager = new BanManager();
         $this->muteManager = new MuteManager();
@@ -111,8 +118,22 @@ class BanSystem extends PluginBase {
             new MuteCommand(), new MuteIdsCommand(), new MuteInfoCommand(), new MuteListCommand(), new MuteLogCommand(), new EditMuteCommand(), new TempMuteCommand(), new UnmuteCommand()
         ]);
 
-        $this->getScheduler()->scheduleRepeatingTask(new CheckTask(), 20);
-        $this->getScheduler()->scheduleRepeatingTask(new PlayerKickTask(), 20);
+        $this->getScheduler()->scheduleRepeatingTask(new ClosureTask(function (): void {
+            BanManager::getInstance()->check();
+            MuteManager::getInstance()->check();
+        }), 20);
+
+        if ($this->getServer()->getPluginManager()->getPlugin("StarGate-Atlantis") === null) {
+            $this->getLogger()->notice("§c1If you are using WaterdogPE, consider using §bStarGate §cto sync bans and mutes on the entire network.");
+        } else $this->initStarGate();
+    }
+
+    private function initStarGate(): void {
+        $this->usingStarGate = true;
+        StarGateAtlantis::getInstance()->getDefaultClient()->getProtocolCodec()->registerPacket(BanSystemPackets::BANS_SYNC_PACKET, new BansSyncPacket());
+        StarGateAtlantis::getInstance()->getDefaultClient()->getProtocolCodec()->registerPacket(BanSystemPackets::MUTES_SYNC_PACKET, new MutesSyncPacket());
+        StarGateAtlantis::getInstance()->getDefaultClient()->getProtocolCodec()->registerPacket(BanSystemPackets::PLAYER_KICK_PACKET, new PlayerKickPacket());
+        StarGateAtlantis::getInstance()->getDefaultClient()->getProtocolCodec()->registerPacket(BanSystemPackets::NOTIFY_PACKET, new NotifyPacket());
     }
 
     public function kickPlayer(Player $player, CommandSender $moderator, string $reason = "No reason provided"): int {
@@ -122,11 +143,16 @@ class BanSystem extends PluginBase {
         if ($player->hasPermission("bansystem.bypass.mute")) return self::FAILED_CANT;
 
         $reason = "§8» §cYou have been §lkicked §r§8«\n§8» §7Reason: §e" . ($ev->getReason() == "" ? "No reason provided" : $ev->getReason());
+        if ($this->usingStarGate) StarGateAtlantis::getInstance()->
         $player->kick($reason);
         NotifyManager::getInstance()->sendNotification(BanSystem::getPrefix() . "§e" . $player->getName() . " §7has been §ckicked §7by §e" . $moderator->getName() . "§7.");
         NotifyManager::getInstance()->sendNotification(BanSystem::getPrefix() . "§7Reason: §e" . ($ev->getReason() == "" ? "No reason provided" : $ev->getReason()));
 
         return self::SUCCESS;
+    }
+
+    public function isUsingStarGate(): bool {
+        return $this->usingStarGate;
     }
 
     public function getNotifyManager(): NotifyManager {

@@ -2,5 +2,7 @@ name: BanSystem
 version: 3.0.1
 api: 5.0.0
 main: r3pt1s\bansystem\BanSystem
+softdepend:
+  - StarGate-Atlantis
 authors:
   - r3pt1s

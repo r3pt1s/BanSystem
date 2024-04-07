@@ -2,11 +2,13 @@
 
 namespace r3pt1s\bansystem\manager\notify;
 
+use alemiz\sga\StarGateAtlantis;
 use pocketmine\player\Player;
 use pocketmine\Server;
 use pocketmine\utils\SingletonTrait;
 use r3pt1s\bansystem\BanSystem;
 use r3pt1s\bansystem\event\notify\NotifyEvent;
+use r3pt1s\bansystem\network\NotifyPacket;
 
 class NotifyManager {
     use SingletonTrait;
@@ -25,6 +27,7 @@ class NotifyManager {
         }
 
         BanSystem::getInstance()->getLogger()->notice("§8[§4NOTIFICATION§8] §e" . str_replace(BanSystem::getPrefix(), "", $message));
+        if (BanSystem::getInstance()->isUsingStarGate()) StarGateAtlantis::getInstance()->getDefaultClient()->sendPacket(NotifyPacket::create($message));
     }
 
     public function setState(Player $player, bool $v): void {

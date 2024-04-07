@@ -2,6 +2,7 @@
 
 namespace r3pt1s\bansystem\manager\ban;
 
+use alemiz\sga\StarGateAtlantis;
 use pocketmine\command\CommandSender;
 use pocketmine\player\Player;
 use pocketmine\utils\SingletonTrait;
@@ -12,6 +13,7 @@ use r3pt1s\bansystem\event\ban\PlayerUnbanEvent;
 use r3pt1s\bansystem\handler\BanHandler;
 use r3pt1s\bansystem\handler\IHandler;
 use r3pt1s\bansystem\manager\notify\NotifyManager;
+use r3pt1s\bansystem\network\BansSyncPacket;
 use r3pt1s\bansystem\util\Configuration;
 
 class BanManager {
@@ -27,6 +29,11 @@ class BanManager {
     }
 
     /** @internal */
+    public function sync(array $bans): void {
+        $this->bans = $bans;
+    }
+
+    /** @internal */
     public function load(): void {
         BanSystem::getInstance()->getProvider()->getBans()->onCompletion(fn(array $bans) => $this->bans = $bans, fn() => BanSystem::getInstance()->getLogger()->emergency("§cFailed to fetch bans"));
     }
@@ -37,6 +44,7 @@ class BanManager {
         if ($ev->isCancelled()) return BanSystem::FAILED_CANCELLED;
 
         $this->bans[$ban->getPlayer()] = $ban;
+        if (BanSystem::getInstance()->isUsingStarGate()) StarGateAtlantis::getInstance()->getDefaultClient()->sendPacket(BansSyncPacket::create());
 
         if ($automatic) {
             NotifyManager::getInstance()->sendNotification(BanSystem::getPrefix() . "§e" . $ban->getPlayer() . " §7has been automatically §cbanned§7.");
@@ -60,7 +68,8 @@ class BanManager {
         if ($ev->isCancelled()) return BanSystem::FAILED_CANCELLED;
 
         $better = $ban->getExpire() > $newTime;
-        $ban->setExpire($newTime);
+        $this->bans[$ban->getPlayer()]->setExpire($newTime);
+        if (BanSystem::getInstance()->isUsingStarGate()) StarGateAtlantis::getInstance()->getDefaultClient()->sendPacket(BansSyncPacket::create());#
 
         NotifyManager::getInstance()->sendNotification(BanSystem::getPrefix() . "§7The ban of §e" . $ban->getPlayer() . " §7has been §" . ($better ? "a" : "c") . "edited §7by §e" . $moderator->getName() . "§7.");
         NotifyManager::getInstance()->sendNotification(BanSystem::getPrefix() . "§7New duration: §e" . $newTime->format("Y-m-d H:i:s"));
@@ -76,6 +85,7 @@ class BanManager {
         if ($ev->isCancelled()) return BanSystem::FAILED_CANCELLED;
 
         unset($this->bans[$ban->getPlayer()]);
+        if (BanSystem::getInstance()->isUsingStarGate()) StarGateAtlantis::getInstance()->getDefaultClient()->sendPacket(BansSyncPacket::create());#
 
         if ($moderator === null) {
             NotifyManager::getInstance()->sendNotification(BanSystem::getPrefix() . "§e" . $ban->getPlayer() . " §7has been automatically §aunbanned§7.");

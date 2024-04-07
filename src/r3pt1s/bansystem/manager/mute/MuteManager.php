@@ -2,6 +2,7 @@
 
 namespace r3pt1s\bansystem\manager\mute;
 
+use alemiz\sga\StarGateAtlantis;
 use pocketmine\command\CommandSender;
 use pocketmine\player\Player;
 use pocketmine\utils\SingletonTrait;
@@ -12,6 +13,7 @@ use r3pt1s\bansystem\event\mute\PlayerUnmuteEvent;
 use r3pt1s\bansystem\handler\IHandler;
 use r3pt1s\bansystem\handler\MuteHandler;
 use r3pt1s\bansystem\manager\notify\NotifyManager;
+use r3pt1s\bansystem\network\MutesSyncPacket;
 use r3pt1s\bansystem\util\Configuration;
 
 class MuteManager {
@@ -27,6 +29,11 @@ class MuteManager {
     }
 
     /** @internal */
+    public function sync(array $mutes): void {
+        $this->mutes = $mutes;
+    }
+
+    /** @internal */
     public function load(): void {
         BanSystem::getInstance()->getProvider()->getMutes()->onCompletion(fn(array $mutes) => $this->mutes = $mutes, fn() => BanSystem::getInstance()->getLogger()->emergency("§cFailed to fetch mutes"));
     }
@@ -37,12 +44,14 @@ class MuteManager {
         if ($ev->isCancelled()) return BanSystem::FAILED_CANCELLED;
 
         $this->mutes[$mute->getPlayer()] = $mute;
+        if (BanSystem::getInstance()->isUsingStarGate()) StarGateAtlantis::getInstance()->getDefaultClient()->sendPacket(MutesSyncPacket::create());
 
         if ($automatic) {
             NotifyManager::getInstance()->sendNotification(BanSystem::getPrefix() . "§e" . $mute->getPlayer() . " §7has been automatically §cmuted§7.");
         } else {
             NotifyManager::getInstance()->sendNotification(BanSystem::getPrefix() . "§e" . $mute->getPlayer() . " §7has been §cmuted §7by §e" . $mute->getModerator() . "§7.");
         }
+
         NotifyManager::getInstance()->sendNotification(BanSystem::getPrefix() . "§7Reason: §e" . $mute->getReason());
         NotifyManager::getInstance()->sendNotification(BanSystem::getPrefix() . "§7Until: §e" . ($mute->getExpire()?->format("Y-m-d H:i:s") ?? "§l§cPERMANENTLY"));
 
@@ -59,7 +68,8 @@ class MuteManager {
         if ($ev->isCancelled()) return BanSystem::FAILED_CANCELLED;
 
         $better = $mute->getExpire() > $newTime;
-        $mute->setExpire($newTime);
+        $this->mutes[$mute->getPlayer()]->setExpire($newTime);
+        if (BanSystem::getInstance()->isUsingStarGate()) StarGateAtlantis::getInstance()->getDefaultClient()->sendPacket(MutesSyncPacket::create());
 
         NotifyManager::getInstance()->sendNotification(BanSystem::getPrefix() . "§7The mute of §e" . $mute->getPlayer() . " §7has been §" . ($better ? "a" : "c") . "edited §7by §e" . $moderator->getName() . "§7.");
         NotifyManager::getInstance()->sendNotification(BanSystem::getPrefix() . "§7New duration: §e" . $newTime->format("Y-m-d H:i:s"));
@@ -75,6 +85,7 @@ class MuteManager {
         if ($ev->isCancelled()) return BanSystem::FAILED_CANCELLED;
 
         unset($this->mutes[$mute->getPlayer()]);
+        if (BanSystem::getInstance()->isUsingStarGate()) StarGateAtlantis::getInstance()->getDefaultClient()->sendPacket(MutesSyncPacket::create());
 
         if ($moderator === null) {
             NotifyManager::getInstance()->sendNotification(BanSystem::getPrefix() . "§e" . $mute->getPlayer() . " §7has been automatically §aunmuted§7.");

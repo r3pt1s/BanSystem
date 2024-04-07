@@ -2,13 +2,22 @@
 # Valid: json, mysql
 # Default: json
 provider: json
+
 # MySQL Settings (only change when using mysql as provider)
-mysqlSettings:
-  host: "127.0.0.1"
-  port: 3306
-  user: "root"
-  password: ""
-  database: "bansystem"
+database:
+  # The database type. Only "mysql" is supported
+  type: mysql
+  mysql:
+    host: 127.0.0.1
+    # Avoid using the "root" user for security reasons.
+    username: root
+    password: ""
+    # The database where you want the tables to be created in
+    schema: your_schema
+  # The maximum number of simultaneous SQL queries
+  # Recommended: 2
+  worker-limit: 2
+
 # Prefix for the messages
 # Default = §c§lBanSystem §r§8» §7
 prefix: "§c§lBanSystem §r§8» §7"

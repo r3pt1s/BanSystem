@@ -17,7 +17,7 @@ class JSONProvider implements Provider {
     private Config $mutesFile;
     private Config $playersFile;
 
-    public function __construct() {
+    public function load(): void {
         if (!file_exists(Configuration::getInstance()->getInfoPath())) mkdir(Configuration::getInstance()->getInfoPath());
         if (!file_exists(Configuration::getInstance()->getInfoPath() . "banlogs/")) mkdir(Configuration::getInstance()->getInfoPath() . "banlogs/");
         if (!file_exists(Configuration::getInstance()->getInfoPath() . "mutelogs/")) mkdir(Configuration::getInstance()->getInfoPath() . "mutelogs/");

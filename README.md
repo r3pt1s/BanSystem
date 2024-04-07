@@ -13,7 +13,16 @@ A system for pocketmine servers.
 - Ban or mute players temporarily 
 - Warn or kick players with a reason
 - MySQL Support
+- MultiServer support (WaterdogPE)
 - Notifications for team members
+
+## If you are using WaterdogPE
+If you use WaterdogPE, you need 3 plugins to sync the bans and mutes on the different servers.
+1. [BanSystem-Proxy](https://github.com/r3pt1s/BanSystem-Proxy/releases/tag/1.0) (PocketMine-Plugin / On every PocketMine sub server)
+2. [StarGate-Atlantis](https://github.com/Alemiz112/StarGate-Atlantis) (PocketMine-Plugin / On every PocketMine sub server)
+3. [StarGate](https://github.com/Alemiz112/StarGate/releases/tag/latest) (WaterdogPE Plugin)
+
+You need to install these 3 plugins to make this work.
 
 ## Commands
 | Command                                       | Description                                            | Permission                     |
@@ -53,7 +62,9 @@ A system for pocketmine servers.
 - Action when max warnings reached
 - Custom action reason and duration when max warnings reached
 - Blocked commands for muted players
-- Activate or deactivate the creation of banlogs and mutelogs
+- Enable or disable banlogs and mutelogs
 - Custom banids and muteids
 - Custom prefix
 - Custom paths
+
+**Made with 💓 by r3pt1s**

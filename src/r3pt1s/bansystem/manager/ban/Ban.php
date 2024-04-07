@@ -56,8 +56,8 @@ class Ban {
                 $data["player"],
                 $data["moderator"],
                 $data["reason"],
-                new \DateTime($data["time"]),
-                (isset($data["expire"]) ? new \DateTime($data["expire"]) : null)
+                (is_int($data["time"]) ? new \DateTime(date("Y-m-d H:i:s", $data["time"])) : new \DateTime($data["time"])),
+                (isset($data["expire"]) ? (is_int($data["expire"]) ? new \DateTime(date("Y-m-d H:i:s", $data["expire"])) : new \DateTime($data["expire"])) : null)
             );
         }
         return null;

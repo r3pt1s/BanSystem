@@ -55,9 +55,8 @@ class Configuration {
         } else $this->provider = "json";
 
         if ($this->provider == "mysql") {
-            if ($this->config->exists("mysqlSettings")) {
-                $settings = (array) $this->config->get("mysqlSettings", []);
-                $this->mysqlSettings = ["host" => $settings["host"] ?? "127.0.0.1", "port" => $settings["port"] ?? 3306, "user" => $settings["user"] ?? "root", "password" => $settings["password"] ?? "", "database" => $settings["database"] ?? "bansystem"];
+            if ($this->config->exists("database")) {
+                $this->mysqlSettings = (array) $this->config->get("database", []);
             } else $this->mysqlSettings = ["host" => "127.0.0.1", "port" => 3306, "user" => "root", "password" => "", "database" => "bansystem"];
         } else $this->mysqlSettings = [];
 
