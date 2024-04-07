@@ -12,6 +12,16 @@ class Mute {
         private ?\DateTime $expire = null
     ) {}
 
+    public function buildMysqlInsertArgs(): array {
+        $args = [
+            "player" => $this->player, "moderator" => $this->moderator,
+            "reason" => $this->reason,
+            "time" => $this->time->format("Y-m-d H:i:s")
+        ];
+        if ($this->expire !== null) $args["expire"] = $this->expire->format("Y-m-d H:i:s");
+        return $args;
+    }
+
     public function setExpire(?\DateTime $expire): void {
         $this->expire = $expire;
     }
@@ -52,6 +62,7 @@ class Mute {
 
     public static function fromArray(array $data): ?self {
         if (isset($data["player"]) && isset($data["moderator"]) && isset($data["reason"]) && isset($data["time"])) {
+            if (isset($data["expire"]) && $data["expire"] == "0000-00-00 00:00:00") unset($data["expire"]);
             return new self(
                 $data["player"],
                 $data["moderator"],

@@ -29,7 +29,7 @@
     -- #}
     -- #{ banlogs
         CREATE TABLE IF NOT EXISTS banlogs (
-            player VARCHAR(16) PRIMARY KEY NOT NULL,
+            player VARCHAR(16) NOT NULL,
             moderator VARCHAR(16) NOT NULL,
             reason VARCHAR(100),
             time TIMESTAMP NOT NULL,
@@ -38,7 +38,7 @@
     -- #}
     -- #{ mutelogs
         CREATE TABLE IF NOT EXISTS mutelogs (
-            player VARCHAR(16) PRIMARY KEY NOT NULL,
+            player VARCHAR(16) NOT NULL,
             moderator VARCHAR(16) NOT NULL,
             reason VARCHAR(100),
             time TIMESTAMP NOT NULL,
@@ -53,7 +53,7 @@
         -- # :moderator string
         -- # :reason string
         -- # :time string
-        -- # :expire string 0
+        -- # :expire string null
         INSERT INTO bans(player, moderator, reason, time, expire)
         VALUES (:player, :moderator, :reason, :time, :expire);
     -- #}
@@ -62,7 +62,7 @@
         -- # :moderator string
         -- # :reason string
         -- # :time string
-        -- # :expire string 0
+        -- # :expire string null
         INSERT INTO banlogs(player, moderator, reason, time, expire)
         VALUES (:player, :moderator, :reason, :time, :expire);
     -- #}
@@ -76,7 +76,7 @@
     -- #}
     -- #{ edit
         -- # :player string
-        -- # :newTime string 0
+        -- # :newTime string null
         UPDATE bans SET expire = :newTime WHERE player = :player;
     -- #}
     -- #{ get
@@ -98,7 +98,7 @@
         -- # :moderator string
         -- # :reason string
         -- # :time string
-        -- # :expire string 0
+        -- # :expire string null
         INSERT INTO mutes(player, moderator, reason, time, expire)
         VALUES (:player, :moderator, :reason, :time, :expire);
     -- #}
@@ -107,7 +107,7 @@
         -- # :moderator string
         -- # :reason string
         -- # :time string
-        -- # :expire string 0
+        -- # :expire string null
         INSERT INTO mutelogs(player, moderator, reason, time, expire)
         VALUES (:player, :moderator, :reason, :time, :expire);
     -- #}
@@ -121,7 +121,7 @@
     -- #}
     -- #{ edit
         -- # :player string
-        -- # :newTime string 0
+        -- # :newTime string null
         UPDATE mutes SET expire = :newTime WHERE player = :player;
     -- #}
     -- #{ get

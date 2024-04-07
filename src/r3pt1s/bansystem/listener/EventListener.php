@@ -44,7 +44,7 @@ class EventListener implements Listener {
 
     public function onChat(PlayerChatEvent $event): void {
         $player = $event->getPlayer();
-        if (($screen = MuteManager::getInstance()->getMuteHandler()->handle($player)) !== null && !$player->hasPermission("bansystem.bypass.mute")) {
+        if (($screen = MuteManager::getInstance()->getMuteHandler()->handle($player->getName())) !== null && !$player->hasPermission("bansystem.bypass.mute")) {
             $player->sendMessage($screen);
             $event->cancel();
         }

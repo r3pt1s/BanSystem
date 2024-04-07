@@ -7,6 +7,7 @@ use pocketmine\promise\Promise;
 use pocketmine\promise\PromiseResolver;
 use poggit\libasynql\DataConnector;
 use poggit\libasynql\libasynql;
+use poggit\libasynql\SqlError;
 use r3pt1s\bansystem\BanSystem;
 use r3pt1s\bansystem\manager\ban\Ban;
 use r3pt1s\bansystem\manager\ban\BanManager;
@@ -29,19 +30,11 @@ class MySQLProvider implements Provider {
     }
 
     public function addBan(Ban $ban): void {
-        $this->connector->executeInsert("bans.add", [
-            "player" => $ban->getPlayer(), "moderator" => $ban->getModerator(),
-            "reason" => $ban->getReason(),
-            "time" => $ban->getTime()->format("Y-m-d H:i:s"), "expire" => $ban->getExpire()?->format("Y-m-d H:i:s") ?? null
-        ]);
+        $this->connector->executeInsert("bans.add", $ban->buildMysqlInsertArgs());
     }
 
     public function addBanLog(Ban $ban): void {
-        $this->connector->executeInsert("bans.addLog", [
-            "player" => $ban->getPlayer(), "moderator" => $ban->getModerator(),
-            "reason" => $ban->getReason(),
-            "time" => $ban->getTime()->format("Y-m-d H:i:s"), "expire" => $ban->getExpire()?->format("Y-m-d H:i:s") ?? null
-        ]);
+        $this->connector->executeInsert("bans.addLog", $ban->buildMysqlInsertArgs());
     }
 
     public function removeBan(Ban $ban): void {
@@ -93,19 +86,11 @@ class MySQLProvider implements Provider {
     }
 
     public function addMute(Mute $mute): void {
-        $this->connector->executeInsert("mutes.add", [
-            "player" => $mute->getPlayer(), "moderator" => $mute->getModerator(),
-            "reason" => $mute->getReason(),
-            "time" => $mute->getTime()->format("Y-m-d H:i:s"), "expire" => $mute->getExpire()?->format("Y-m-d H:i:s") ?? null
-        ]);
+        $this->connector->executeInsert("mutes.add", $mute->buildMysqlInsertArgs());
     }
 
     public function addMuteLog(Mute $mute): void {
-        $this->connector->executeInsert("mutes.addLog", [
-            "player" => $mute->getPlayer(), "moderator" => $mute->getModerator(),
-            "reason" => $mute->getReason(),
-            "time" => $mute->getTime()->format("Y-m-d H:i:s"), "expire" => $mute->getExpire()?->format("Y-m-d H:i:s") ?? null
-        ]);
+        $this->connector->executeInsert("mutes.addLog", $mute->buildMysqlInsertArgs());
     }
 
     public function removeMute(Mute $mute): void {
