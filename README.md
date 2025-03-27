@@ -4,6 +4,13 @@ A ban system for pocketmine servers.
 ## IMPORTANT NOTE
 If you are new to the version **3.1.0** of the BanSystem, please delete your **config.yml** file in the **plugin_data/BanSystem** folder.
 
+## Upcoming features
+| Feature           | Description                                      |
+|-------------------|--------------------------------------------------|
+| Staff tools       | Staff tools e.g. /freeze, /vanish, ...           |
+| Multi language    | Multi language support (english & german)        |
+| System management | Disable & enable already existing system (below) |
+
 ## Integrated systems
 | System               | Description           |
 |----------------------|-----------------------|
