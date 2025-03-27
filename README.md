@@ -28,7 +28,7 @@ If you are new to the version **3.1.0** of the BanSystem, please delete your **c
 
 ## If you are using WaterdogPE
 If you use WaterdogPE, you need to install 3 plugins to sync the bans and mutes on the different servers.
-1. [BanSystem-Proxy](https://github.com/r3pt1s/BanSystem-Proxy/releases/tag/1.0) (PocketMine-Plugin / On every PocketMine sub server)
+1. [BanSystem-Proxy](https://github.com/r3pt1s/BanSystem-Proxy/releases/tag/1.0) (WaterdogPE Plugin)
 2. [StarGate-Atlantis](https://github.com/Alemiz112/StarGate-Atlantis) (PocketMine-Plugin / On every PocketMine sub server)
 3. [StarGate](https://github.com/Alemiz112/StarGate/releases/tag/latest) (WaterdogPE Plugin)
 
