@@ -1,9 +1,6 @@
 # [BanSystem](https://poggit.pmmp.io/p/BanSystem/) [![](https://poggit.pmmp.io/shield.state/BanSystem)](https://poggit.pmmp.io/p/BanSystem)
 A ban system for pocketmine servers.
 
-## IMPORTANT NOTE
-If you are new to the version **3.1.0** of the BanSystem, please delete your **config.yml** file in the **plugin_data/BanSystem** folder.
-
 ## Integrated systems
 | System               | Description           |
 |----------------------|-----------------------|
@@ -18,7 +15,7 @@ If you are new to the version **3.1.0** of the BanSystem, please delete your **c
 - MySQL Support
 - MultiServer support (WaterdogPE)
 - Notifications for team members
-- Multi language support (english & german, can add custom ones)
+- Multi language support (english & german, can add custom ones by creating a corresponding file in plugin_data/BanSystem/lang/ and putting only the file name as a language in the config.yml)
 - StaffTools (/vanish, /freeze, /spectate, /chatmute)
 - Enable or disable integrated systems (except NotificationSystem)
 
