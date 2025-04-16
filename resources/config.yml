@@ -3,6 +3,10 @@
 # Default: json
 provider: json
 
+# Used language for the plugin
+# In-built languages: de_DE, en_US (default)
+language: en_US
+
 # MySQL Settings (only change when using mysql as provider)
 database:
   # The database type. Only "mysql" is supported
@@ -47,6 +51,12 @@ max-warns-action: ban
 max-warns-action-reason: "Warns Limit reached."
 # Activate or deactivate the creation of ban and mute logs
 make-ban-mute-logs: true
+# Enable or disable specific features (enabled = true, disabled = false)
+features:
+  ban_system: true
+  mute_system: true
+  warn_system: true
+  staff_tools: true
 # Blocked commands for muted players
 # Without '/'
 blocked-commands:

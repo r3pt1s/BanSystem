@@ -7,7 +7,7 @@ use pocketmine\event\CancellableTrait;
 use pocketmine\event\Event;
 use r3pt1s\bansystem\manager\warn\Warn;
 
-class WarnEvent extends Event implements Cancellable {
+abstract class WarnEvent extends Event implements Cancellable {
     use CancellableTrait;
 
     public function __construct(private readonly Warn $warn) {}

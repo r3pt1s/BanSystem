@@ -9,7 +9,7 @@ use r3pt1s\bansystem\BanSystem;
 use r3pt1s\bansystem\manager\BanId;
 use r3pt1s\bansystem\manager\MuteId;
 
-class Configuration {
+final class Configuration {
     use SingletonTrait;
 
     private const VALID_ACTIONS = [
@@ -23,6 +23,7 @@ class Configuration {
     private Config $config;
     private Config $idsFile;
     private string $provider;
+    private string $language;
     private array $mysqlSettings;
     private string $prefix;
     private string $mutePath;
@@ -33,6 +34,7 @@ class Configuration {
     private string $maxWarnsActionReason;
     private ?string $maxWarnsActionDuration;
     private bool $makeBanMuteLogs;
+    private array $features;
     private array $blockedCommands;
     /** @var array<BanId> */
     private array $banIds;
@@ -53,6 +55,8 @@ class Configuration {
                 $this->provider = strtolower($this->config->get("provider"));
             } else $this->provider = "json";
         } else $this->provider = "json";
+
+        $this->language = $this->config->get("language", "en_US");
 
         if ($this->provider == "mysql") {
             if ($this->config->exists("database")) {
@@ -106,11 +110,21 @@ class Configuration {
             $this->makeBanMuteLogs = boolval($this->config->get("make-ban-mute-logs"));
         } else $this->makeBanMuteLogs = true;
 
+        if ($this->config->exists("features")) {
+            $features = [];
+            foreach ($this->config->get("features", []) as $feature => $enabled) {
+                $features[$feature] = $enabled;
+            }
+
+            $this->features = $features;
+        } else $this->blockedCommands = [];
+
         if ($this->config->exists("blocked-commands")) {
             $blockedCommands = [];
-            foreach ($this->config->get("blocked-commands") ?? [] as $command) {
+            foreach ($this->config->get("blocked-commands", []) as $command) {
                 $blockedCommands[] = $command;
             }
+
             $this->blockedCommands = $blockedCommands;
         } else $this->blockedCommands = [];
 
@@ -186,6 +200,10 @@ class Configuration {
         return $this->provider;
     }
 
+    public function getLanguage(): string {
+        return $this->language;
+    }
+
     public function getMysqlSettings(): array {
         return $this->mysqlSettings;
     }
@@ -224,6 +242,26 @@ class Configuration {
 
     public function isMakeBanMuteLogs(): bool {
         return $this->makeBanMuteLogs;
+    }
+
+    public function isBanSystemEnabled(): bool {
+        return $this->features["ban_system"] ?? true;
+    }
+
+    public function isMuteSystemEnabled(): bool {
+        return $this->features["mute_system"] ?? true;
+    }
+
+    public function isWarnSystemEnabled(): bool {
+        return $this->features["warn_system"] ?? true;
+    }
+
+    public function isStaffToolsEnabled(): bool {
+        return $this->features["staff_tools"] ?? true;
+    }
+
+    public function getFeatures(): array {
+        return $this->features;
     }
 
     public function getBlockedCommands(): array {

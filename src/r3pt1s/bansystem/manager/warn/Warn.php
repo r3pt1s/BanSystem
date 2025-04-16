@@ -4,7 +4,7 @@ namespace r3pt1s\bansystem\manager\warn;
 
 use pocketmine\player\Player;
 
-class Warn {
+final class Warn {
 
     public function __construct(
         private readonly Player $player,

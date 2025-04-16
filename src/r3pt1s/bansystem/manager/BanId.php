@@ -2,7 +2,7 @@
 
 namespace r3pt1s\bansystem\manager;
 
-class BanId {
+final class BanId {
 
     public function __construct(
         private readonly int $id,

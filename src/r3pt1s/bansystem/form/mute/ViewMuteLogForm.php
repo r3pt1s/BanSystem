@@ -7,24 +7,32 @@ use dktapps\pmforms\MenuOption;
 use pocketmine\player\Player;
 use r3pt1s\bansystem\BanSystem;
 use r3pt1s\bansystem\manager\mute\Mute;
+use r3pt1s\bansystem\util\Language;
+use r3pt1s\bansystem\util\LanguageKeys;
 
-class ViewMuteLogForm extends MenuForm {
+final class ViewMuteLogForm extends MenuForm {
 
     public function __construct(
         private readonly Mute $muteLog,
         private readonly string $target
     ) {
-        $text = "§7Player: §e" . $this->target . "\n";
-        $text .= "§7Moderator: §e" . $this->muteLog->getModerator() . "\n";
-        $text .= "§7Banned At: §e" . $this->muteLog->getTime()->format("Y-m-d H:i:s") . "\n";
-        $text .= "§7Reason: §e" . $this->muteLog->getReason() . "\n";
-        $text .= "§7Until: §e" . ($this->muteLog->getExpire()?->format("Y-m-d H:i:s") ?? "§c§lPERMANENTLY");
-
-        parent::__construct("§c" . $this->muteLog->getTime()->format("Y-m-d H:i:s"), $text, [new MenuOption("§cBack")], function (Player $player, int $data) use($target): void {
-            BanSystem::getInstance()->getProvider()->getMuteLogs($this->target)->onCompletion(
-                fn(array $logs) => $player->sendForm(new MuteLogsForm($this->target, $logs)),
-                fn() => $player->sendMessage(BanSystem::getPrefix() . "§4Failed to fetch mutelogs of §e" . $this->target . "§4.")
-            );
-        });
+        parent::__construct(
+            Language::get()->translate(LanguageKeys::UI_MUTE_LOGS_VIEW_TITLE, $this->muteLog->getTime()->format("Y-m-d H:i:s")),
+            Language::get()->translate(
+                LanguageKeys::UI_MUTE_LOGS_VIEW_TEXT,
+                $this->target,
+                $this->muteLog->getModerator(),
+                $this->muteLog->getTime()->format("Y-m-d H:i:s"),
+                $this->muteLog->getReason(),
+                ($this->muteLog->getExpire()?->format("Y-m-d H:i:s") ?? "§c§l" . Language::get()->translate(LanguageKeys::RAW_PERMANENTLY))
+            ),
+            [new MenuOption("§cBack")],
+            function (Player $player, int $data): void {
+                BanSystem::getInstance()->getProvider()->getmuteLogs($this->target)->onCompletion(
+                    fn(array $logs) => $player->sendForm(new MuteLogsForm($this->target, $logs)),
+                    fn() => $player->sendMessage(Language::get()->translate(LanguageKeys::CHECK_MUTE_LOGS_FAILED, $this->target))
+                );
+            }
+        );
     }
 }

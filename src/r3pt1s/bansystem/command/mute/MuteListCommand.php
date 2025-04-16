@@ -7,11 +7,13 @@ use r3pt1s\bansystem\BanSystem;
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
 use r3pt1s\bansystem\manager\mute\MuteManager;
+use r3pt1s\bansystem\util\Language;
+use r3pt1s\bansystem\util\LanguageKeys;
 
-class MuteListCommand extends Command implements PluginOwned {
+final class MuteListCommand extends Command implements PluginOwned {
 
     public function __construct() {
-        parent::__construct("mutelist", "See a list of all muted players", "/mutelist", ["mutes"]);
+        parent::__construct("mutelist", Language::get()->translate(LanguageKeys::COMMAND_DESCRIPTION_MUTE_LIST), "/mutelist", ["mutes"]);
         $this->setPermission("bansystem.command.mutelist");
     }
 
@@ -21,7 +23,7 @@ class MuteListCommand extends Command implements PluginOwned {
             $sender->sendMessage(BanSystem::getPrefix() . "§7Mutes §8(§e" . count($mutes) . "§8)§7:");
             $sender->sendMessage("§8» §e" . (count($mutes) == 0 ? "§cNo mutes." : implode("§8, §e", $mutes)));
         } else {
-            $sender->sendMessage(BanSystem::getPrefix() . BanSystem::NO_PERMS);
+            $sender->sendMessage(Language::get()->translate(LanguageKeys::NO_PERMS));
         }
         return true;
     }

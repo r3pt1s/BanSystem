@@ -6,20 +6,28 @@ use dktapps\pmforms\MenuForm;
 use dktapps\pmforms\MenuOption;
 use pocketmine\player\Player;
 use r3pt1s\bansystem\manager\warn\Warn;
+use r3pt1s\bansystem\util\Language;
+use r3pt1s\bansystem\util\LanguageKeys;
 
-class ViewWarnForm extends MenuForm {
+final class ViewWarnForm extends MenuForm {
 
     public function __construct(
         private readonly Warn $warn,
         private readonly string $target
     ) {
-        $text = "§7Player: §e" . $this->target . "\n";
-        $text .= "§7Moderator: §e" . $this->warn->getModerator() . "\n";
-        $text .= "§7Warned At: §e" . $this->warn->getTime()->format("Y-m-d H:i:s") . "\n";
-        $text .= "§7Reason: §e" . $this->warn->getReason();
-
-        parent::__construct("§c" . $this->warn->getTime()->format("Y-m-d H:i:s"), $text, [new MenuOption("§cBack")], function (Player $player, int $data) use($target): void {
-            $player->sendForm(new WarnsForm($target));
-        });
+        parent::__construct(
+            Language::get()->translate(LanguageKeys::UI_WARN_LOGS_VIEW_TITLE, $this->warn->getTime()->format("Y-m-d H:i:s")),
+            Language::get()->translate(
+                LanguageKeys::UI_WARN_LOGS_VIEW_TEXT,
+                $this->target,
+                $this->warn->getModerator(),
+                $this->warn->getTime()->format("Y-m-d H:i:s"),
+                $this->warn->getReason()
+            ),
+            [new MenuOption("§cBack")],
+            function (Player $player, int $data): void {
+                $player->sendForm(new WarnsForm($this->target));
+            }
+        );
     }
 }

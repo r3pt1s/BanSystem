@@ -7,11 +7,13 @@ use pocketmine\command\CommandSender;
 use pocketmine\plugin\PluginOwned;
 use pocketmine\Server;
 use r3pt1s\bansystem\BanSystem;
+use r3pt1s\bansystem\util\Language;
+use r3pt1s\bansystem\util\LanguageKeys;
 
-class KickCommand extends Command implements PluginOwned {
+final class KickCommand extends Command implements PluginOwned {
 
     public function __construct() {
-        parent::__construct("kick", "Kick a player from the server", "/kick <player> [reason]");
+        parent::__construct("kick", Language::get()->translate(LanguageKeys::COMMAND_DESCRIPTION_KICK), "/kick <player> [reason]");
         $this->setPermission("bansystem.command.kick");
     }
 
@@ -23,21 +25,27 @@ class KickCommand extends Command implements PluginOwned {
             }
 
             $target = array_shift($args);
+
+            if ($target == $sender->getName()) {
+                $sender->sendMessage(Language::get()->translate(LanguageKeys::PUNISH_FAILED_YOURSELF));
+                return true;
+            }
+
             $reason = trim(implode(" ", $args));
             if (($target = Server::getInstance()->getPlayerExact($target)) !== null) {
                 if (($response = BanSystem::getInstance()->kickPlayer($target, $sender, $reason)) == BanSystem::SUCCESS) {
-                    $sender->sendMessage(BanSystem::getPrefix() . "§7You have kicked §e" . $target->getName() . " §7from the server.");
+                    $sender->sendMessage(Language::get()->translate(LanguageKeys::KICK_SUCCESS, $target->getName()));
                 } else {
-                    $sender->sendMessage(BanSystem::getPrefix() . match ($response) {
-                        BanSystem::FAILED_CANCELLED => "§cThe event was cancelled and the player cannot be kicked.",
-                        BanSystem::FAILED_CANT => "§cYou can't kick the player."
+                    $sender->sendMessage(match ($response) {
+                        BanSystem::FAILED_CANCELLED => Language::get()->translate(LanguageKeys::KICK_EVENT_CANCELLED, $target->getName()),
+                        BanSystem::FAILED_CANT => Language::get()->translate(LanguageKeys::KICK_FAILED, $target->getName())
                     });
                 }
             } else {
-                $sender->sendMessage(BanSystem::getPrefix() . "§cThis player is not online!");
+                $sender->sendMessage(Language::get()->translate(LanguageKeys::PLAYER_NOT_ONLINE));
             }
         } else {
-            $sender->sendMessage(BanSystem::getPrefix() . BanSystem::NO_PERMS);
+            $sender->sendMessage(Language::get()->translate(LanguageKeys::NO_PERMS));
         }
         return true;
     }

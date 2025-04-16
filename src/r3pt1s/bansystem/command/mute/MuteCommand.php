@@ -9,12 +9,14 @@ use r3pt1s\bansystem\manager\mute\MuteManager;
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
 use r3pt1s\bansystem\util\Configuration;
+use r3pt1s\bansystem\util\Language;
+use r3pt1s\bansystem\util\LanguageKeys;
 use r3pt1s\bansystem\util\Utils;
 
-class MuteCommand extends Command implements PluginOwned {
+final class MuteCommand extends Command implements PluginOwned {
 
     public function __construct() {
-        parent::__construct("mute", "Mute a player", "/mute <player> <muteId>");
+        parent::__construct("mute", Language::get()->translate(LanguageKeys::COMMAND_DESCRIPTION_MUTE), "/mute <player> <muteId>");
         $this->setPermission("bansystem.command.mute");
     }
 
@@ -29,34 +31,34 @@ class MuteCommand extends Command implements PluginOwned {
             $muteId = $args[1];
 
             if ($target == $sender->getName()) {
-                $sender->sendMessage(BanSystem::getPrefix() . "§cYou can't mute yourself!");
+                $sender->sendMessage(Language::get()->translate(LanguageKeys::PUNISH_FAILED_YOURSELF));
                 return true;
             }
 
             BanSystem::getInstance()->getProvider()->checkPlayer($target)->onCompletion(
                 function(bool $exists) use($sender, $target, $muteId): void {
                     if (!$exists) {
-                        $sender->sendMessage(BanSystem::getPrefix() . "§cThis player doesn't exists!");
+                        $sender->sendMessage(Language::get()->translate(LanguageKeys::PLAYER_NOT_FOUND));
                         return;
                     }
 
                     if (($muteId = Configuration::getInstance()->getMuteId($muteId)) !== null) {
                         if (($response = MuteManager::getInstance()->addMute(new Mute($target, $sender->getName(), $muteId->getReason(), new \DateTime(), ($muteId->getDuration() === null ? null : Utils::convertStringToDateFormat($muteId->getDuration()))))) == BanSystem::SUCCESS) {
-                            $sender->sendMessage(BanSystem::getPrefix() . "§7You have muted §e" . $target . "§7.");
+                            $sender->sendMessage(Language::get()->translate(LanguageKeys::MUTE_SUCCESS, $target));
                         } else {
-                            $sender->sendMessage(BanSystem::getPrefix() . "§c" . match ($response) {
-                                BanSystem::FAILED_ALREADY => "§e" . $target . " §cis already muted!",
-                                BanSystem::FAILED_CANCELLED => "§cThe event was cancelled and the player cannot be muted.",
-                            });
+                            $sender->sendMessage("§c" . match ($response) {
+                                    BanSystem::FAILED_ALREADY => Language::get()->translate(LanguageKeys::MUTE_ALREADY_MUTED, $target),
+                                    BanSystem::FAILED_CANCELLED => Language::get()->translate(LanguageKeys::MUTE_EVENT_CANCELLED)
+                                });
                         }
                     } else {
-                        $sender->sendMessage(BanSystem::getPrefix() . "§cPlease provide a valid muteid!");
+                        $sender->sendMessage(Language::get()->translate(LanguageKeys::MUTE_VALID_MUTEID));
                     }
                 },
-                fn() => $sender->sendMessage(BanSystem::getPrefix() . "§4Failed to check if §e" . $target . " §4exists")
+                fn() => $sender->sendMessage(Language::get()->translate(LanguageKeys::CHECK_EXISTS_FAILED, $target))
             );
         } else {
-            $sender->sendMessage(BanSystem::getPrefix() . BanSystem::NO_PERMS);
+            $sender->sendMessage(Language::get()->translate(LanguageKeys::NO_PERMS));
         }
         return true;
     }

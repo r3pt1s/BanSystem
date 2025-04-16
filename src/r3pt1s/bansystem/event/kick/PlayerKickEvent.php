@@ -8,7 +8,7 @@ use pocketmine\event\CancellableTrait;
 use pocketmine\event\player\PlayerEvent;
 use pocketmine\player\Player;
 
-class PlayerKickEvent extends PlayerEvent implements Cancellable {
+final class PlayerKickEvent extends PlayerEvent implements Cancellable {
     use CancellableTrait;
 
     public function __construct(

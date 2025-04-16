@@ -8,11 +8,13 @@ use r3pt1s\bansystem\manager\notify\NotifyManager;
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
 use pocketmine\player\Player;
+use r3pt1s\bansystem\util\Language;
+use r3pt1s\bansystem\util\LanguageKeys;
 
-class NotifyCommand extends Command implements PluginOwned {
+final class NotifyCommand extends Command implements PluginOwned {
 
     public function __construct() {
-        parent::__construct("notify", "Enable or disable notifications", "/notify");
+        parent::__construct("notify", Language::get()->translate(LanguageKeys::COMMAND_DESCRIPTION_NOTIFY), "/notify");
         $this->setPermission("bansystem.command.notify");
     }
 
@@ -21,13 +23,13 @@ class NotifyCommand extends Command implements PluginOwned {
             if ($this->testPermissionSilent($sender)) {
                 if (NotifyManager::getInstance()->hasNotifications($sender)) {
                     NotifyManager::getInstance()->setState($sender, false);
-                    $sender->sendMessage(BanSystem::getPrefix() . "§7You will no longer receive notifications!");
+                    $sender->sendMessage(Language::get()->translate(LanguageKeys::NOTIFICATIONS_DISABLED));
                 } else {
-                    $sender->sendMessage(BanSystem::getPrefix() . "§7You will now receive notifications!");
                     NotifyManager::getInstance()->setState($sender, true);
+                    $sender->sendMessage(Language::get()->translate(LanguageKeys::NOTIFICATIONS_ENABLED));
                 }
             } else {
-                $sender->sendMessage(BanSystem::getPrefix() . BanSystem::NO_PERMS);
+                $sender->sendMessage(Language::get()->translate(LanguageKeys::NO_PERMS));
             }
         }
         return true;

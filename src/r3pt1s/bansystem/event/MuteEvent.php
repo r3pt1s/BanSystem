@@ -7,7 +7,7 @@ use pocketmine\event\CancellableTrait;
 use pocketmine\event\Event;
 use r3pt1s\bansystem\manager\mute\Mute;
 
-class MuteEvent extends Event implements Cancellable {
+abstract class MuteEvent extends Event implements Cancellable {
     use CancellableTrait;
 
     public function __construct(private readonly Mute $mute) {}

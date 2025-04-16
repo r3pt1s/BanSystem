@@ -8,7 +8,7 @@ use alemiz\sga\protocol\types\PacketHelper;
 use r3pt1s\bansystem\manager\mute\Mute;
 use r3pt1s\bansystem\manager\mute\MuteManager;
 
-class MutesSyncPacket extends StarGatePacket {
+final class MutesSyncPacket extends StarGatePacket {
 
     private array $mutes = [];
 

@@ -7,11 +7,13 @@ use r3pt1s\bansystem\BanSystem;
 use r3pt1s\bansystem\manager\ban\BanManager;
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
+use r3pt1s\bansystem\util\Language;
+use r3pt1s\bansystem\util\LanguageKeys;
 
-class UnbanCommand extends Command implements PluginOwned {
+final class UnbanCommand extends Command implements PluginOwned {
 
     public function __construct() {
-        parent::__construct("unban", "Unban a player", "/unban <player> [mistake]");
+        parent::__construct("unban", Language::get()->translate(LanguageKeys::COMMAND_DESCRIPTION_UNBAN), "/unban <player> [mistake]", ["pardon"]);
         $this->setPermission("bansystem.command.unban");
     }
 
@@ -28,18 +30,18 @@ class UnbanCommand extends Command implements PluginOwned {
 
             if (($ban = BanManager::getInstance()->getBan($target)) !== null) {
                 if (($response = BanManager::getInstance()->removeBan($ban, $sender, $mistake)) == BanSystem::SUCCESS) {
-                    $sender->sendMessage(BanSystem::getPrefix() . "§7You have unbanned §e" . $target . "§7.");
+                    $sender->sendMessage(Language::get()->translate(LanguageKeys::UNBAN_SUCCESS, $target));
                 } else {
-                    $sender->sendMessage(BanSystem::getPrefix() . "§c" . match($response) {
-                        BanSystem::FAILED_CANCELLED => "The event was cancelled and the ban of the player cannot be removed.",
-                        BanSystem::FAILED_NOT => "§e" . $target . " §cis not banned!"
+                    $sender->sendMessage(match($response) {
+                        BanSystem::FAILED_CANCELLED => Language::get()->translate(LanguageKeys::UNBAN_EVENT_CANCELLED),
+                        BanSystem::FAILED_NOT => Language::get()->translate(LanguageKeys::PLAYER_NOT_BANNED)
                     });
                 }
             } else {
-                $sender->sendMessage(BanSystem::getPrefix() . "§e" . $target . " §cis not banned!");
+                $sender->sendMessage(Language::get()->translate(LanguageKeys::PLAYER_NOT_BANNED));
             }
         } else {
-            $sender->sendMessage(BanSystem::getPrefix() . BanSystem::NO_PERMS);
+            $sender->sendMessage(Language::get()->translate(LanguageKeys::NO_PERMS));
         }
         return true;
     }

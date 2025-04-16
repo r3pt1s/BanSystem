@@ -14,7 +14,7 @@ use r3pt1s\bansystem\manager\ban\BanManager;
 use r3pt1s\bansystem\manager\mute\Mute;
 use r3pt1s\bansystem\manager\mute\MuteManager;
 
-class MySQLProvider implements Provider {
+final class MySQLProvider implements Provider {
 
     private DataConnector $connector;
 

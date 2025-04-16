@@ -2,7 +2,7 @@
 
 namespace r3pt1s\bansystem\manager\mute;
 
-class Mute {
+final class Mute {
 
     public function __construct(
         private readonly string $player,

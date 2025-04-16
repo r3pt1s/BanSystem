@@ -11,7 +11,7 @@ use r3pt1s\bansystem\BanSystem;
 use r3pt1s\bansystem\event\notify\NotifyEvent;
 use r3pt1s\bansystem\manager\notify\NotifyManager;
 
-class NotifyPacket extends StarGatePacket {
+final class NotifyPacket extends StarGatePacket {
 
     private string $message = "";
 

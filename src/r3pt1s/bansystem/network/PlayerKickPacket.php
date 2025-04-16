@@ -5,7 +5,7 @@ namespace r3pt1s\bansystem\network;
 use alemiz\sga\protocol\StarGatePacket;
 use alemiz\sga\protocol\types\PacketHelper;
 
-class PlayerKickPacket extends StarGatePacket {
+final class PlayerKickPacket extends StarGatePacket {
 
     private string $player = "";
     private string $reason = "";

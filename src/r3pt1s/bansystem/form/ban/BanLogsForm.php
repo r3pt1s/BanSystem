@@ -6,8 +6,10 @@ use dktapps\pmforms\MenuForm;
 use dktapps\pmforms\MenuOption;
 use pocketmine\player\Player;
 use r3pt1s\bansystem\manager\ban\Ban;
+use r3pt1s\bansystem\util\Language;
+use r3pt1s\bansystem\util\LanguageKeys;
 
-class BanLogsForm extends MenuForm {
+final class BanLogsForm extends MenuForm {
 
     public function __construct(
         private readonly string $target,
@@ -19,10 +21,15 @@ class BanLogsForm extends MenuForm {
             $options[] = new MenuOption("§c" . $banLog->getTime()->format("Y-m-d H:i:s") . "\n§e" . $banLog->getReason());
         }
 
-        parent::__construct("§cBanLogs §8» §e" . $this->target, "§e" . $this->target . " §7has §c" . count($this->banLogs) . " banlogs§7.", $options, function (Player $player, int $data): void {
-            if (isset($this->banLogs[$data])) {
-                $player->sendForm(new ViewBanLogForm($this->banLogs[$data], $this->target));
+        parent::__construct(
+            Language::get()->translate(LanguageKeys::UI_BAN_LOGS_TITLE),
+            Language::get()->translate(LanguageKeys::UI_BAN_LOGS_TEXT, $this->target, count($this->banLogs)),
+            $options,
+            function (Player $player, int $data): void {
+                if (isset($this->banLogs[$data])) {
+                    $player->sendForm(new ViewBanLogForm($this->banLogs[$data], $this->target));
+                }
             }
-        });
+        );
     }
 }

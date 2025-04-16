@@ -15,9 +15,11 @@ use r3pt1s\bansystem\manager\mute\Mute;
 use r3pt1s\bansystem\manager\mute\MuteManager;
 use r3pt1s\bansystem\manager\notify\NotifyManager;
 use r3pt1s\bansystem\util\Configuration;
+use r3pt1s\bansystem\util\Language;
+use r3pt1s\bansystem\util\LanguageKeys;
 use r3pt1s\bansystem\util\Utils;
 
-class WarnManager {
+final class WarnManager {
     use SingletonTrait;
 
     private array $warns = [];
@@ -33,8 +35,7 @@ class WarnManager {
         if (!isset($this->warns[$warn->getPlayer()->getName()])) $this->warns[$warn->getPlayer()->getName()] = [];
         $this->warns[$warn->getPlayer()->getName()][] = $warn;
 
-        NotifyManager::getInstance()->sendNotification(BanSystem::getPrefix() . "§e" . $warn->getPlayer()->getName() . " §7has been §cwarned §7by §e" . $warn->getModerator() . "§7.");
-        NotifyManager::getInstance()->sendNotification(BanSystem::getPrefix() . "§7Reason: §e" . ($warn->getReason() ?? "No reason provided"));
+        NotifyManager::getInstance()->sendNotification(Language::get()->translate(LanguageKeys::NOTIFY_WARN_ADD, $warn->getPlayer()->getName(), $warn->getModerator(), ($warn->getReason() ?? "§c/")));
 
         $this->check($warn->getPlayer());
 
@@ -49,8 +50,7 @@ class WarnManager {
             unset($this->warns[$warn->getPlayer()->getName()][array_search($warn, $this->warns[$warn->getPlayer()->getName()])]);
             $this->warns[$warn->getPlayer()->getName()] = array_values($this->warns[$warn->getPlayer()->getName()]);
 
-            NotifyManager::getInstance()->sendNotification(BanSystem::getPrefix() . "§7The warn from §e" . $warn->getModerator() . " §7given to §e" . $warn->getPlayer()->getName() . " §7has been §aremoved §7by §e" . $moderator->getName() . "§7.");
-            NotifyManager::getInstance()->sendNotification(BanSystem::getPrefix() . "§7Reason for the warn: §e" . ($warn->getReason() ?? "No reason provided"));
+            NotifyManager::getInstance()->sendNotification(Language::get()->translate(LanguageKeys::NOTIFY_WARN_REMOVE, $warn->getModerator(), $warn->getPlayer()->getName(), ($warn->getReason() ?? "§c/")));
 
             return BanSystem::SUCCESS;
         }
@@ -61,8 +61,7 @@ class WarnManager {
     public function clearWarns(Player $player, CommandSender $moderator): void {
         $this->warns[$player->getName()] = [];
 
-        NotifyManager::getInstance()->sendNotification(BanSystem::getPrefix() . "§7The warns of §e" . $player->getName() . " §7were §acleared§7.");
-        NotifyManager::getInstance()->sendNotification(BanSystem::getPrefix() . "§7Moderator: §e" . $moderator->getName());
+        NotifyManager::getInstance()->sendNotification(Language::get()->translate(LanguageKeys::NOTIFY_WARN_CLEARED, $player->getName(), $moderator->getName()));
     }
 
     public function check(Player $player): void {

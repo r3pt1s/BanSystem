@@ -6,7 +6,7 @@ use pocketmine\command\CommandSender;
 use r3pt1s\bansystem\event\BanEvent;
 use r3pt1s\bansystem\manager\ban\Ban;
 
-class PlayerBanEditEvent extends BanEvent {
+final class PlayerBanEditEvent extends BanEvent {
 
     public function __construct(
         Ban $ban,

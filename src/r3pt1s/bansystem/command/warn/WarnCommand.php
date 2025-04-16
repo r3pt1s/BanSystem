@@ -9,11 +9,13 @@ use r3pt1s\bansystem\manager\warn\WarnManager;
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
 use pocketmine\Server;
+use r3pt1s\bansystem\util\Language;
+use r3pt1s\bansystem\util\LanguageKeys;
 
-class WarnCommand extends Command implements PluginOwned {
+final class WarnCommand extends Command implements PluginOwned {
 
     public function __construct() {
-        parent::__construct("warn", "Warn a player", "/warn <player> [reason]");
+        parent::__construct("warn", Language::get()->translate(LanguageKeys::COMMAND_DESCRIPTION_WARN), "/warn <player> [reason]");
         $this->setPermission("bansystem.command.warn");
     }
 
@@ -29,24 +31,23 @@ class WarnCommand extends Command implements PluginOwned {
 
             if (($target = Server::getInstance()->getPlayerExact($target)) !== null) {
                 if ($target->getName() == $sender->getName()) {
-                    $sender->sendMessage(BanSystem::getPrefix() . "§cYou can't warn yourself!");
+                    $sender->sendMessage(Language::get()->translate(LanguageKeys::PUNISH_FAILED_YOURSELF));
                     return true;
                 }
 
                 if (($response = WarnManager::getInstance()->addWarn(new Warn($target, $sender->getName(), new \DateTime(), ($reason == "" ? null : $reason)))) == BanSystem::SUCCESS) {
-                    $sender->sendMessage(BanSystem::getPrefix() . "§7You have warned §e" . $target->getName() . "§7.");
-                    $target->sendMessage(BanSystem::getPrefix() . "§cYou have been §lwarned§r§c!");
-                    $target->sendMessage(BanSystem::getPrefix() . "§7Reason: §e" . ($reason == "" ? "No reason provided." : $reason));
+                    $sender->sendMessage(Language::get()->translate(LanguageKeys::WARN_SUCCESS, $target->getName()));
+                    $target->sendMessage(Language::get()->translate(LanguageKeys::SCREEN_WARN, ($reason == "" ? "/" : $reason)));
                 } else {
-                    $sender->sendMessage(BanSystem::getPrefix() . "§c" . match ($response) {
-                        BanSystem::FAILED_CANCELLED => "§cThe event was cancelled and the player cannot be warned.",
+                    $sender->sendMessage(match ($response) {
+                        BanSystem::FAILED_CANCELLED => Language::get()->translate(LanguageKeys::WARN_EVENT_CANCELLED)
                     });
                 }
             } else {
-                $sender->sendMessage(BanSystem::getPrefix() . "§cThis player is not online!");
+                $sender->sendMessage(Language::get()->translate(LanguageKeys::PLAYER_NOT_ONLINE));
             }
         } else {
-            $sender->sendMessage(BanSystem::getPrefix() . BanSystem::NO_PERMS);
+            $sender->sendMessage(Language::get()->translate(LanguageKeys::NO_PERMS));
         }
         return true;
     }

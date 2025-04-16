@@ -1,0 +1,267 @@
+{
+  "waterdogpe.info": "§cIf you are using WaterdogPE, consider using §bStarGate §cto sync bans and mutes on the entire network.",
+  "raw.permanently": "PERMANENTLY",
+  "raw.yes": "Yes",
+  "raw.no": "No",
+  "no.perms": "{PREFIX}§cYou don't have the permission to use this command.",
+
+  "command.description.ban": "Ban a player",
+  "command.description.ban_ids": "List all banids",
+  "command.description.ban_info": "See ban-related information about a player",
+  "command.description.ban_list": "List all active bans",
+  "command.description.ban_log": "See the ban history of a player",
+  "command.description.edit_ban": "Edit the ban of a player",
+  "command.description.temp_ban": "Ban a player temporarily at your will",
+  "command.description.unban": "Unban a player",
+  "command.description.edit_mute": "Edit the mute of a player",
+  "command.description.mute": "Mute a player",
+  "command.description.mute_ids": "List all muteids",
+  "command.description.mute_info": "See mute-related information about a player",
+  "command.description.mute_list": "List all active mutes",
+  "command.description.mute_log": "See the mute history of a player",
+  "command.description.temp_mute": "Mute a player temporarily at your will",
+  "command.description.unmute": "Unmute a player",
+  "command.description.notify": "Enable or disable notifications",
+  "command.description.clear_warns": "Clear the warns of a player",
+  "command.description.warn": "Warn a player",
+  "command.description.warns": "List all warns of a player",
+  "command.description.kick": "Kick a player",
+  "command.description.vanish": "Enable or disable vanish",
+  "command.description.freeze": "Freeze or unfreeze a player",
+  "command.description.mute_chat": "Mute the chat (entirely)",
+  "command.description.spectate": "Spectate a player",
+
+  "punish.failed.yourself": "{PREFIX}§cYou can't punish yourself!",
+  "player.not.banned": "{PREFIX}§e%0% §cis not banned!",
+  "player.not.muted": "{PREFIX}§e%0% §cis not muted!",
+  "player.not.found": "{PREFIX}§cThe player doesn't exists!",
+  "player.not.online": "{PREFIX}§cThe player is not online!",
+  "check.exists.failed": "{PREFIX}§4Failed to check if §e%0% §4exists!",
+  "check.mute_points.failed": "{PREFIX}§4Failed to fetch mutepoints of §e%0%",
+  "check.ban_points.failed": "{PREFIX}§4Failed to fetch banpoints of §e%0%",
+  "check.ban_logs.failed": "{PREFIX}§4Failed to fetch banlogs from §e%0%",
+  "check.mute_logs.failed": "{PREFIX}§4Failed to fetch mutelogs from §e%0%",
+  "valid.time_format": "{PREFIX}§cPlease provide a valid time format! Example: §e1d",
+
+  "notifications.enabled": "{PREFIX}§7You will now receive notifications!",
+  "notifications.disabled": "{PREFIX}§7You will no longer receive notifications!",
+
+  "ban.success": "{PREFIX}§7You have banned §c%0%§7!",
+  "ban.already_banned": "{PREFIX}§e%0% §cis already banned!",
+  "ban.event.cancelled": "{PREFIX}§cThe event was cancelled and the player cannot be banned.",
+  "ban.valid_banid": "{PREFIX}§cPlease provide a valid banid!",
+
+  "mute.success": "{PREFIX}§7You have muted §c%0%§7!",
+  "mute.already_muted": "{PREFIX}§e%0% §cis already muted!",
+  "mute.event.cancelled": "{PREFIX}§cThe event was cancelled and the player cannot be muted.",
+  "mute.valid_muteid": "{PREFIX}§cPlease provide a valid muteid!",
+
+  "ban_info.message.not_banned": [
+    "{PREFIX}§7Information about §e%0%§8:",
+    "{PREFIX}§7BanPoints: §e%1%",
+    "{PREFIX}§7Banned: §e%2%"
+  ],
+
+  "ban_info.message.banned": [
+    "{PREFIX}§7Information about §e%0%§8:",
+    "{PREFIX}§7BanPoints: §e%1%",
+    "{PREFIX}§7Banned: §e%2%",
+    "{PREFIX}§7Reason: §e%3%",
+    "{PREFIX}§7Moderator: §e%4%",
+    "{PREFIX}§7Banned At: §e%5%",
+    "{PREFIX}§7Duration: §e%6%"
+  ],
+
+  "mute_info.message.not_muted": [
+    "{PREFIX}§7Information about §e%0%§8:",
+    "{PREFIX}§7MutePoints: §e%1%",
+    "{PREFIX}§7Muted: §e%2%"
+  ],
+
+  "mute_info.message.muted": [
+    "{PREFIX}§7Information about §e%0%§8:",
+    "{PREFIX}§7MutePoints: §e%1%",
+    "{PREFIX}§7Muted: §e%2%",
+    "{PREFIX}§7Reason: §e%3%",
+    "{PREFIX}§7Moderator: §e%4%",
+    "{PREFIX}§7Muted At: §e%5%",
+    "{PREFIX}§7Duration: §e%6%"
+  ],
+
+  "ban_log.none": "{PREFIX}§e%0% §7has no banlogs.",
+  "mute_log.none": "{PREFIX}§e%0% §7has no mutelogs.",
+
+  "edit_ban.edit.failed": "{PREFIX}§cYou can't edit the ban of §e%0%§c, because it's §lPERMANENTLY§r§c.",
+  "edit_ban.success": "{PREFIX}§7You have edited the ban of §e%0%§7!",
+  "edit_ban.event.cancelled": "{PREFIX}§cThe event was cancelled and the ban of the player cannot be edited.",
+
+  "edit_mute.edit.failed": "{PREFIX}§cYou can't edit the mute of §e%0%§c, because it's §lPERMANENTLY§r§c.",
+  "edit_mute.success": "{PREFIX}§7You have edited the mute of §e%0%§7!",
+  "edit_mute.event.cancelled": "{PREFIX}§cThe event was cancelled and the mute of the player cannot be edited.",
+
+  "unban.success": "{PREFIX}§7You have unbanned §e%0%§7!",
+  "unban.event.cancelled": "{PREFIX}§cThe event was cancelled and the ban of player cannot be removed.",
+
+  "unmute.success": "{PREFIX}§7You have unmuted §e%0%§7!",
+  "unmute.event.cancelled": "{PREFIX}§cThe event was cancelled and the mute of player cannot be removed.",
+
+  "kick.success": "{PREFIX}§7You have kicked §e%0% §7from the server.",
+  "kick.event.cancelled": "{PREFIX}§cThe event was cancelled and the player cannot be kicked.",
+  "kick.failed": "{PREFIX}§cYou can't kick the player.",
+
+  "warns.cleared": "{PREFIX}§7The warns of §e%0% §7were cleared!",
+  "warns.none": "{PREFIX}§e%0% §7has no warns.",
+
+  "warn.success": "{PREFIX}§7You have warned §e%0%§7!",
+  "warn.event.cancelled": "{PREFIX}§cThe event was cancelled and the player cannot be warned.",
+
+  "chat_mute.muted.success": "{PREFIX}§7The chat has been §cmuted§7!",
+  "chat_mute.unmuted.success": "{PREFIX}§7The chat has been §aunmuted§7!",
+
+  "chat_mute.muted.global": "{PREFIX}§7The chat has been §cmuted §7by §e%0%§7!",
+  "chat_mute.unmuted.global": "{PREFIX}§7The chat has been §aunmuted §7by §e%0%§7!",
+
+  "freeze.frozen": "{PREFIX}§cYou are currently §bfrozen§c.",
+  "freeze.released": "{PREFIX}§aYou are no longer §bfrozen§a!",
+  "freeze.freeze.success": "{PREFIX}§e%0% §7has been §bfreezed§7!",
+  "freeze.release.success": "{PREFIX}§e%0% §7has been §breleased§7!",
+
+  "spectate.start": "{PREFIX}§7You are now spectating §e%0%§7!",
+  "spectate.stop": "{PREFIX}§7You are no longer spectating.",
+
+  "vanish.vanished": "{PREFIX}§7You have §avanished§7!",
+  "vanish.shown": "{PREFIX}§7You are no longer vanished.",
+
+  "ui.ban.logs.title": "§cBanLogs §8» §e%0%",
+  "ui.ban.logs.text": "§e%0% §7has §c%1% banlogs§7.",
+  "ui.ban.logs.view.title": "§c%0%",
+  "ui.ban.logs.view.text": [
+    "§7Player: §e%0%",
+    "§7Moderator: §e%1%",
+    "§7Banned At: §e%2%",
+    "§7Reason: §e%3%",
+    "§7Until: §e%4%"
+  ],
+
+  "ui.mute.logs.title": "§cMuteLogs §8» §e%0%",
+  "ui.mute.logs.text": "§e%0% §7has §c%1% mutelogs§7.",
+  "ui.mute.logs.view.title": "§c%0%",
+  "ui.mute.logs.view.text": [
+    "§7Player: §e%0%",
+    "§7Moderator: §e%1%",
+    "§7Muted At: §e%2%",
+    "§7Reason: §e%3%",
+    "§7Until: §e%4%"
+  ],
+
+  "ui.warn.logs.title": "§cWarns §8» §e%0%",
+  "ui.warn.logs.text": "§e%0% §7has §c%1% warns§7.",
+  "ui.warn.logs.view.title": "§c%0%",
+  "ui.warn.logs.view.text": [
+    "§7Player: §e%0%",
+    "§7Moderator: §e%1%",
+    "§7Warned At: §e%2%",
+    "§7Reason: §e%3%"
+  ],
+
+  "screen.ban": [
+    "§cYou have been §lbanned",
+    "§8» §7Reason: §e%0%",
+    "§8» §7Remaining time: §e%1%"
+  ],
+
+  "screen.mute": [
+    "{PREFIX}§cYou have been §lmuted§r§c!",
+    "{PREFIX}§7Reason: §e%0%",
+    "{PREFIX}§7Remaining time: §e%1%"
+  ],
+
+  "screen.chat_mute": [
+    "{PREFIX}§$cThe chat is currently muted.",
+    "{PREFIX}§cPlease wait until the chat is getting unmuted again."
+  ],
+
+  "screen.warn": [
+    "{PREFIX}§cYou have been §lwarned§r§c!",
+    "{PREFIX}§7Reason: §e%0%"
+  ],
+
+  "screen.kick": [
+    "§8» §cYou have been §lkicked §r§8«",
+    "§8» §7Reason: §e%0%"
+  ],
+
+  "notify.ban.auto": [
+    "{PREFIX}§e%0% §7has been automatically §cbanned§7.",
+    "{PREFIX}§7Reason: §e%1%",
+    "{PREFIX}§7Until: §e%2%"
+  ],
+
+  "notify.ban.manual": [
+    "{PREFIX}§e%0% §7has been §cbanned §7by §e%1%§7.",
+    "{PREFIX}§7Reason: §e%2%",
+    "{PREFIX}§7Until: §e%3%"
+  ],
+
+  "notify.ban.edited": [
+    "{PREFIX}§7The ban of §e%0% §7has been edited by §e%1%§7.",
+    "{PREFIX}§7New duration: §e%2%"
+  ],
+
+  "notify.unban.auto": [
+    "{PREFIX}§e%0% §7has been automatically §aunbanned§7."
+  ],
+
+  "notify.unban.manual": [
+    "{PREFIX}§e%0% §7has been §aunbanned §7by §e%1%§7.",
+    "{PREFIX}§7Mistake: §e%2%"
+  ],
+
+  "notify.mute.auto": [
+    "{PREFIX}§e%0% §7has been automatically §cmuted§7.",
+    "{PREFIX}§7Reason: §e%1%",
+    "{PREFIX}§7Until: §e%2%"
+  ],
+
+  "notify.mute.manual": [
+    "{PREFIX}§e%0% §7has been §cmuted §7by §e%1%§7.",
+    "{PREFIX}§7Reason: §e%2%",
+    "{PREFIX}§7Until: §e%3%"
+  ],
+
+  "notify.mute.edited": [
+    "{PREFIX}§7The mute of §e%0% §7has been edited by §e%1%§7.",
+    "{PREFIX}§7New duration: §e%2%"
+  ],
+
+  "notify.unmute.auto": [
+    "{PREFIX}§e%0% §7has been automatically §aunmuted§7."
+  ],
+
+  "notify.unmute.manual": [
+    "{PREFIX}§e%0% §7has been §aunmuted §7by §e%1%§7.",
+    "{PREFIX}§7Mistake: §e%2%"
+  ],
+
+  "notify.warn.add": [
+    "{PREFIX}§e%0% §7has been §cwarned §7by §e%1%§7.",
+    "{PREFIX}§7Reason: §e%2%"
+  ],
+
+  "notify.warn.remove": [
+    "{PREFIX}§7The warn from §e%0% §7given to §e%1% §7has been §aremoved §7by §e%2%§7.",
+    "{PREFIX}§7Reason for the warn: §e%3%"
+  ],
+
+  "notify.warn.cleared": [
+    "{PREFIX}§7The warns of §e%0% §7were §acleared§7.",
+    "{PREFIX}§7Moderator: §e%1%"
+  ],
+
+  "notify.kick": [
+    "{PREFIX}§e%0% §7has been §ckicked §7by §e%1%§7!",
+    "{PREFIX}§7Reason: §e%1%"
+  ],
+
+  "mute.command.blocked": "{PREFIX}§7You can't execute the command §e%0%§7."
+}

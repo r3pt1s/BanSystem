@@ -5,14 +5,16 @@ namespace r3pt1s\bansystem\command\mute;
 use pocketmine\plugin\PluginOwned;
 use r3pt1s\bansystem\BanSystem;
 use r3pt1s\bansystem\manager\mute\MuteManager;
+use r3pt1s\bansystem\util\Language;
+use r3pt1s\bansystem\util\LanguageKeys;
 use r3pt1s\bansystem\util\Utils;
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
 
-class EditMuteCommand extends Command implements PluginOwned {
+final class EditMuteCommand extends Command implements PluginOwned {
 
     public function __construct() {
-        parent::__construct("editmute", "Edit an existing mute", "/editmute <player> <add|sub> <time>");
+        parent::__construct("editmute", Language::get()->translate(LanguageKeys::COMMAND_DESCRIPTION_EDIT_MUTE), "/editmute <player> <add|sub> <time>");
         $this->setPermission("bansystem.command.editmute");
     }
 
@@ -29,32 +31,32 @@ class EditMuteCommand extends Command implements PluginOwned {
 
             if ($action == "add" || $action == "sub") {
                 if (Utils::convertStringToDateFormat($time) === null) {
-                    $sender->sendMessage(BanSystem::getPrefix() . "§cPlease provide a valid time format! Example: §e1d");
+                    $sender->sendMessage(Language::get()->translate(LanguageKeys::VALID_TIME_FORMAT));
                     return true;
                 }
 
                 if (($mute = MuteManager::getInstance()->getMute($target)) !== null) {
                     if ($mute->getExpire() === null) {
-                        $sender->sendMessage(BanSystem::getPrefix() . "§cYou can't edit the mute of §e" . $target . "§c, because it's §lPERMANENTLY§r§c.");
+                        $sender->sendMessage(Language::get()->translate(LanguageKeys::EDIT_MUTE_EDIT_FAILED, $target));
                         return true;
                     }
 
                     if (($response = MuteManager::getInstance()->editMute($mute, $sender, Utils::convertStringToDateFormat($time, $mute->getExpire(), $action))) == BanSystem::SUCCESS) {
-                        $sender->sendMessage(BanSystem::getPrefix() . "§7You have edited the mute of §e" . $target);
+                        $sender->sendMessage(Language::get()->translate(LanguageKeys::EDIT_MUTE_SUCCESS, $target));
                     } else {
-                        $sender->sendMessage(BanSystem::getPrefix() . "§c" . match($response) {
-                            BanSystem::FAILED_CANCELLED => "The event was cancelled and the mute of the player cannot be edited.",
-                            BanSystem::FAILED_NOT => "§e" . $target . " §cis not muted!"
-                        });
+                        $sender->sendMessage(match($response) {
+                                BanSystem::FAILED_CANCELLED => Language::get()->translate(LanguageKeys::EDIT_MUTE_EVENT_CANCELLED),
+                                BanSystem::FAILED_NOT => Language::get()->translate(LanguageKeys::PLAYER_NOT_MUTED, $target)
+                            });
                     }
                 } else {
-                    $sender->sendMessage(BanSystem::getPrefix() . "§e" . $target . " §cis not muted!");
+                    $sender->sendMessage(Language::get()->translate(LanguageKeys::PLAYER_NOT_MUTED, $target));
                 }
             } else {
                 $sender->sendMessage(BanSystem::getPrefix() . "§c" . $this->getUsage());
             }
         } else {
-            $sender->sendMessage(BanSystem::getPrefix() . BanSystem::NO_PERMS);
+            $sender->sendMessage(Language::get()->translate(LanguageKeys::NO_PERMS));
         }
         return true;
     }

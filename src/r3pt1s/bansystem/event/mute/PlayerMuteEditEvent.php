@@ -6,7 +6,7 @@ use pocketmine\command\CommandSender;
 use r3pt1s\bansystem\event\MuteEvent;
 use r3pt1s\bansystem\manager\mute\Mute;
 
-class PlayerMuteEditEvent extends MuteEvent {
+final class PlayerMuteEditEvent extends MuteEvent {
 
     public function __construct(
         Mute $mute,

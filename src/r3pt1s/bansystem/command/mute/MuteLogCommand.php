@@ -8,11 +8,13 @@ use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
 use pocketmine\player\Player;
 use r3pt1s\bansystem\form\mute\MuteLogsForm;
+use r3pt1s\bansystem\util\Language;
+use r3pt1s\bansystem\util\LanguageKeys;
 
-class MuteLogCommand extends Command implements PluginOwned {
+final class MuteLogCommand extends Command implements PluginOwned {
 
     public function __construct() {
-        parent::__construct("mutelog", "See a list of every mute from a player", "/mutelog <player>");
+        parent::__construct("mutelog", Language::get()->translate(LanguageKeys::COMMAND_DESCRIPTION_MUTE_LOG), "/mutelog <player>");
         $this->setPermission("bansystem.command.mutelog");
     }
 
@@ -29,16 +31,16 @@ class MuteLogCommand extends Command implements PluginOwned {
                 BanSystem::getInstance()->getProvider()->getMuteLogs($target)->onCompletion(
                     function(array $logs) use($sender, $target): void {
                         if (count($logs) == 0) {
-                            $sender->sendMessage(BanSystem::getPrefix() . "§e" . $target . " §7has no mutelogs.");
+                            $sender->sendMessage(Language::get()->translate(LanguageKeys::MUTE_LOG_NONE, $target));
                             return;
                         }
 
                         $sender->sendForm(new MuteLogsForm($target, $logs));
                     },
-                    fn() => $sender->sendMessage(BanSystem::getPrefix() . "§4Failed to fetch mutelogs from §e" . $target)
+                    fn() => $sender->sendMessage(Language::get()->translate(LanguageKeys::CHECK_MUTE_LOGS_FAILED, $target))
                 );
             } else {
-                $sender->sendMessage(BanSystem::getPrefix() . BanSystem::NO_PERMS);
+                $sender->sendMessage(Language::get()->translate(LanguageKeys::NO_PERMS));
             }
         }
         return true;

@@ -17,8 +17,10 @@ use r3pt1s\bansystem\manager\notify\NotifyManager;
 use r3pt1s\bansystem\network\BansSyncPacket;
 use r3pt1s\bansystem\network\PlayerKickPacket;
 use r3pt1s\bansystem\util\Configuration;
+use r3pt1s\bansystem\util\Language;
+use r3pt1s\bansystem\util\LanguageKeys;
 
-class BanManager {
+final class BanManager {
     use SingletonTrait;
 
     private IHandler $banHandler;
@@ -54,13 +56,10 @@ class BanManager {
         }
 
         if ($automatic) {
-            NotifyManager::getInstance()->sendNotification(BanSystem::getPrefix() . "§e" . $ban->getPlayer() . " §7has been automatically §cbanned§7.");
+            NotifyManager::getInstance()->sendNotification(Language::get()->translate(LanguageKeys::NOTIFY_BAN_AUTO, $ban->getPlayer(), $ban->getReason(), ($ban->getExpire()?->format("Y-m-d H:i:s") ?? "§l§c" . Language::get()->translate(LanguageKeys::RAW_PERMANENTLY))));
         } else {
-            NotifyManager::getInstance()->sendNotification(BanSystem::getPrefix() . "§e" . $ban->getPlayer() . " §7has been §cbanned §7by §e" . $ban->getModerator() . "§7.");
+            NotifyManager::getInstance()->sendNotification(Language::get()->translate(LanguageKeys::NOTIFY_BAN_MANUAL, $ban->getPlayer(), $ban->getModerator(), $ban->getReason(), ($ban->getExpire()?->format("Y-m-d H:i:s") ?? "§l§c" . Language::get()->translate(LanguageKeys::RAW_PERMANENTLY))));
         }
-
-        NotifyManager::getInstance()->sendNotification(BanSystem::getPrefix() . "§7Reason: §e" . $ban->getReason());
-        NotifyManager::getInstance()->sendNotification(BanSystem::getPrefix() . "§7Until: §e" . ($ban->getExpire()?->format("Y-m-d H:i:s") ?? "§l§cPERMANENTLY"));
 
         BanSystem::getInstance()->getProvider()->addBan($ban);
         BanSystem::getInstance()->getProvider()->addBanPoint($ban->getPlayer());
@@ -74,12 +73,10 @@ class BanManager {
         ($ev = new PlayerBanEditEvent($ban, $moderator, $newTime))->call();
         if ($ev->isCancelled()) return BanSystem::FAILED_CANCELLED;
 
-        $better = $ban->getExpire() > $newTime;
         $this->bans[$ban->getPlayer()]->setExpire($newTime);
-        if (BanSystem::getInstance()->isUsingStarGate()) StarGateAtlantis::getInstance()->getDefaultClient()->sendPacket(BansSyncPacket::create());#
+        if (BanSystem::getInstance()->isUsingStarGate()) StarGateAtlantis::getInstance()->getDefaultClient()->sendPacket(BansSyncPacket::create());
 
-        NotifyManager::getInstance()->sendNotification(BanSystem::getPrefix() . "§7The ban of §e" . $ban->getPlayer() . " §7has been §" . ($better ? "a" : "c") . "edited §7by §e" . $moderator->getName() . "§7.");
-        NotifyManager::getInstance()->sendNotification(BanSystem::getPrefix() . "§7New duration: §e" . $newTime->format("Y-m-d H:i:s"));
+        NotifyManager::getInstance()->sendNotification(Language::get()->translate(LanguageKeys::NOTIFY_BAN_EDITED, $ban->getPlayer(), $moderator->getName(), $newTime->format("Y-m-d H:i:s")));
 
         BanSystem::getInstance()->getProvider()->editBan($ban, $newTime->format("Y-m-d H:i:s"));
 
@@ -95,10 +92,9 @@ class BanManager {
         if (BanSystem::getInstance()->isUsingStarGate()) StarGateAtlantis::getInstance()->getDefaultClient()->sendPacket(BansSyncPacket::create());#
 
         if ($moderator === null) {
-            NotifyManager::getInstance()->sendNotification(BanSystem::getPrefix() . "§e" . $ban->getPlayer() . " §7has been automatically §aunbanned§7.");
+            NotifyManager::getInstance()->sendNotification(Language::get()->translate(LanguageKeys::NOTIFY_UNBAN_AUTO, $ban->getPlayer()));
         } else {
-            NotifyManager::getInstance()->sendNotification(BanSystem::getPrefix() . "§e" . $ban->getPlayer() . " §7has been §aunbanned §7by §e" . $moderator->getName() . "§7.");
-            NotifyManager::getInstance()->sendNotification(BanSystem::getPrefix() . "§7Mistake: §" . ($mistake ? "aYes" : "cNo"));
+            NotifyManager::getInstance()->sendNotification(Language::get()->translate(LanguageKeys::NOTIFY_UNBAN_MANUAL, $ban->getPlayer(), $moderator->getName(), Language::get()->translate($mistake ? LanguageKeys::RAW_YES : LanguageKeys::RAW_NO)));
         }
 
         BanSystem::getInstance()->getProvider()->removeBan($ban);

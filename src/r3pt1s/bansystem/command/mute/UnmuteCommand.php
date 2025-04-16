@@ -7,11 +7,13 @@ use r3pt1s\bansystem\BanSystem;
 use r3pt1s\bansystem\manager\mute\MuteManager;
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
+use r3pt1s\bansystem\util\Language;
+use r3pt1s\bansystem\util\LanguageKeys;
 
-class UnmuteCommand extends Command implements PluginOwned {
+final class UnmuteCommand extends Command implements PluginOwned {
 
     public function __construct() {
-        parent::__construct("unmute", "Unmute a player", "/unmute <player> [mistake]");
+        parent::__construct("unmute", Language::get()->translate(LanguageKeys::COMMAND_DESCRIPTION_UNMUTE), "/unmute <player> [mistake]");
         $this->setPermission("bansystem.command.unmute");
     }
 
@@ -28,18 +30,18 @@ class UnmuteCommand extends Command implements PluginOwned {
 
             if (($mute = MuteManager::getInstance()->getMute($target)) !== null) {
                 if (($response = MuteManager::getInstance()->removeMute($mute, $sender, $mistake)) == BanSystem::SUCCESS) {
-                    $sender->sendMessage(BanSystem::getPrefix() . "§7You have unmuted §e" . $target . "§7.");
+                    $sender->sendMessage(Language::get()->translate(LanguageKeys::UNMUTE_SUCCESS, $target));
                 } else {
-                    $sender->sendMessage(BanSystem::getPrefix() . "§c" . match($response) {
-                        BanSystem::FAILED_CANCELLED => "The event was cancelled and the mute of the player cannot be removed.",
-                        BanSystem::FAILED_NOT => "§e" . $target . " §cis not muted!"
-                    });
+                    $sender->sendMessage(match($response) {
+                            BanSystem::FAILED_CANCELLED => Language::get()->translate(LanguageKeys::UNMUTE_EVENT_CANCELLED),
+                            BanSystem::FAILED_NOT => Language::get()->translate(LanguageKeys::PLAYER_NOT_MUTED)
+                        });
                 }
             } else {
-                $sender->sendMessage(BanSystem::getPrefix() . "§e" . $target . " §cis not muted!");
+                $sender->sendMessage(Language::get()->translate(LanguageKeys::PLAYER_NOT_MUTED));
             }
         } else {
-            $sender->sendMessage(BanSystem::getPrefix() . BanSystem::NO_PERMS);
+            $sender->sendMessage(Language::get()->translate(LanguageKeys::NO_PERMS));
         }
         return true;
     }

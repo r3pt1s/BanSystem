@@ -2,7 +2,7 @@
 
 namespace r3pt1s\bansystem\util;
 
-class Utils {
+final class Utils {
 
     public static function convertStringToDateFormat(string $format, ?\DateTime $time = null, string $type = "add"): ?\DateTime {
         if ($format == "") return null;

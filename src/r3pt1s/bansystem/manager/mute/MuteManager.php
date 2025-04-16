@@ -15,8 +15,10 @@ use r3pt1s\bansystem\handler\MuteHandler;
 use r3pt1s\bansystem\manager\notify\NotifyManager;
 use r3pt1s\bansystem\network\MutesSyncPacket;
 use r3pt1s\bansystem\util\Configuration;
+use r3pt1s\bansystem\util\Language;
+use r3pt1s\bansystem\util\LanguageKeys;
 
-class MuteManager {
+final class MuteManager {
     use SingletonTrait;
 
     private IHandler $muteHandler;
@@ -47,13 +49,10 @@ class MuteManager {
         if (BanSystem::getInstance()->isUsingStarGate()) StarGateAtlantis::getInstance()->getDefaultClient()->sendPacket(MutesSyncPacket::create());
 
         if ($automatic) {
-            NotifyManager::getInstance()->sendNotification(BanSystem::getPrefix() . "§e" . $mute->getPlayer() . " §7has been automatically §cmuted§7.");
+            NotifyManager::getInstance()->sendNotification(Language::get()->translate(LanguageKeys::NOTIFY_MUTE_AUTO, $mute->getPlayer(), $mute->getReason(), ($mute->getExpire()?->format("Y-m-d H:i:s") ?? "§l§c" . Language::get()->translate(LanguageKeys::RAW_PERMANENTLY))));
         } else {
-            NotifyManager::getInstance()->sendNotification(BanSystem::getPrefix() . "§e" . $mute->getPlayer() . " §7has been §cmuted §7by §e" . $mute->getModerator() . "§7.");
+            NotifyManager::getInstance()->sendNotification(Language::get()->translate(LanguageKeys::NOTIFY_MUTE_MANUAL, $mute->getPlayer(), $mute->getModerator(), $mute->getReason(), ($mute->getExpire()?->format("Y-m-d H:i:s") ?? "§l§c" . Language::get()->translate(LanguageKeys::RAW_PERMANENTLY))));
         }
-
-        NotifyManager::getInstance()->sendNotification(BanSystem::getPrefix() . "§7Reason: §e" . $mute->getReason());
-        NotifyManager::getInstance()->sendNotification(BanSystem::getPrefix() . "§7Until: §e" . ($mute->getExpire()?->format("Y-m-d H:i:s") ?? "§l§cPERMANENTLY"));
 
         BanSystem::getInstance()->getProvider()->addMute($mute);
         BanSystem::getInstance()->getProvider()->addMutePoint($mute->getPlayer());
@@ -67,12 +66,10 @@ class MuteManager {
         ($ev = new PlayerMuteEditEvent($mute, $moderator, $newTime))->call();
         if ($ev->isCancelled()) return BanSystem::FAILED_CANCELLED;
 
-        $better = $mute->getExpire() > $newTime;
         $this->mutes[$mute->getPlayer()]->setExpire($newTime);
         if (BanSystem::getInstance()->isUsingStarGate()) StarGateAtlantis::getInstance()->getDefaultClient()->sendPacket(MutesSyncPacket::create());
 
-        NotifyManager::getInstance()->sendNotification(BanSystem::getPrefix() . "§7The mute of §e" . $mute->getPlayer() . " §7has been §" . ($better ? "a" : "c") . "edited §7by §e" . $moderator->getName() . "§7.");
-        NotifyManager::getInstance()->sendNotification(BanSystem::getPrefix() . "§7New duration: §e" . $newTime->format("Y-m-d H:i:s"));
+        NotifyManager::getInstance()->sendNotification(Language::get()->translate(LanguageKeys::NOTIFY_MUTE_EDITED, $mute->getPlayer(), $moderator->getName(), $newTime->format("Y-m-d H:i:s")));
 
         BanSystem::getInstance()->getProvider()->editMute($mute, $newTime->format("Y-m-d H:i:s"));
 
@@ -88,10 +85,9 @@ class MuteManager {
         if (BanSystem::getInstance()->isUsingStarGate()) StarGateAtlantis::getInstance()->getDefaultClient()->sendPacket(MutesSyncPacket::create());
 
         if ($moderator === null) {
-            NotifyManager::getInstance()->sendNotification(BanSystem::getPrefix() . "§e" . $mute->getPlayer() . " §7has been automatically §aunmuted§7.");
+            NotifyManager::getInstance()->sendNotification(Language::get()->translate(LanguageKeys::NOTIFY_UNMUTE_AUTO, $mute->getPlayer()));
         } else {
-            NotifyManager::getInstance()->sendNotification(BanSystem::getPrefix() . "§e" . $mute->getPlayer() . " §7has been §aunmuted §7by §e" . $moderator->getName() . "§7.");
-            NotifyManager::getInstance()->sendNotification(BanSystem::getPrefix() . "§7Mistake: §" . ($mistake ? "aYes" : "cNo"));
+            NotifyManager::getInstance()->sendNotification(Language::get()->translate(LanguageKeys::NOTIFY_UNMUTE_MANUAL, $mute->getPlayer(), $moderator->getName(), Language::get()->translate($mistake ? LanguageKeys::RAW_YES : LanguageKeys::RAW_NO)));
         }
 
         BanSystem::getInstance()->getProvider()->removeMute($mute);

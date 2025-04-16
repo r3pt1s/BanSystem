@@ -11,7 +11,7 @@ use r3pt1s\bansystem\manager\ban\Ban;
 use r3pt1s\bansystem\manager\mute\Mute;
 use r3pt1s\bansystem\util\Configuration;
 
-class JSONProvider implements Provider {
+final class JSONProvider implements Provider {
 
     private Config $bansFile;
     private Config $mutesFile;

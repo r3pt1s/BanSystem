@@ -6,7 +6,7 @@ use pocketmine\player\Player;
 use r3pt1s\bansystem\event\WarnEvent;
 use r3pt1s\bansystem\manager\warn\Warn;
 
-class PlayerWarnRemoveEvent extends WarnEvent {
+final class PlayerWarnRemoveEvent extends WarnEvent {
 
     public function __construct(
         Warn $warn,

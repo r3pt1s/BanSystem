@@ -8,11 +8,13 @@ use r3pt1s\bansystem\BanSystem;
 use r3pt1s\bansystem\manager\warn\WarnManager;
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
+use r3pt1s\bansystem\util\Language;
+use r3pt1s\bansystem\util\LanguageKeys;
 
-class ClearWarnsCommand extends Command implements PluginOwned {
+final class ClearWarnsCommand extends Command implements PluginOwned {
 
     public function __construct() {
-        parent::__construct("clearwarns", "Clear the warns of a player", "/clearwarns <player>");
+        parent::__construct("clearwarns", Language::get()->translate(LanguageKeys::COMMAND_DESCRIPTION_CLEAR_WARNS), "/clearwarns <player>");
         $this->setPermission("bansystem.command.clearwarns");
     }
 
@@ -26,13 +28,14 @@ class ClearWarnsCommand extends Command implements PluginOwned {
             $target = implode(" ", $args);
 
             if (($target = Server::getInstance()->getPlayerExact($target)) !== null) {
-                $sender->sendMessage(BanSystem::getPrefix() . "§7The warns of §e" . $target->getName() . " §7were cleared!");
+                $sender->sendMessage(Language::get()->translate(LanguageKeys::WARNS_CLEARED, $target->getName()));
                 WarnManager::getInstance()->clearWarns($target, $sender);
             } else {
-                $sender->sendMessage(BanSystem::getPrefix() . "§cThis player is not online!");
+                
+                $sender->sendMessage(Language::get()->translate(LanguageKeys::WARNS_CLEARED, $target->getName()));
             }
         } else {
-            $sender->sendMessage(BanSystem::getPrefix() . BanSystem::NO_PERMS);
+            $sender->sendMessage(Language::get()->translate(LanguageKeys::NO_PERMS));
         }
         return true;
     }

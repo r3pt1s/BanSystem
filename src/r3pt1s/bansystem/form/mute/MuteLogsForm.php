@@ -6,8 +6,10 @@ use r3pt1s\bansystem\manager\mute\Mute;
 use dktapps\pmforms\MenuForm;
 use dktapps\pmforms\MenuOption;
 use pocketmine\player\Player;
+use r3pt1s\bansystem\util\Language;
+use r3pt1s\bansystem\util\LanguageKeys;
 
-class MuteLogsForm extends MenuForm {
+final class MuteLogsForm extends MenuForm {
 
     public function __construct(
         private readonly string $target,
@@ -19,10 +21,15 @@ class MuteLogsForm extends MenuForm {
             $options[] = new MenuOption("§c" . $muteLog->getTime()->format("Y-m-d H:i:s") . "\n§e" . $muteLog->getReason());
         }
 
-        parent::__construct("§cMuteLogs §8» §e" . $this->target, "§e" . $this->target . " §7has §c" . count($this->muteLogs) . " mutelogs§7.", $options, function (Player $player, int $data): void {
-            if (isset($this->muteLogs[$data])) {
-                $player->sendForm(new ViewMuteLogForm($this->muteLogs[$data], $this->target));
+        parent::__construct(
+            Language::get()->translate(LanguageKeys::UI_MUTE_LOGS_TITLE),
+            Language::get()->translate(LanguageKeys::UI_MUTE_LOGS_TEXT, $this->target, count($this->muteLogs)),
+            $options,
+            function (Player $player, int $data): void {
+                if (isset($this->muteLogs[$data])) {
+                    $player->sendForm(new ViewMuteLogForm($this->muteLogs[$data], $this->target));
+                }
             }
-        });
+        );
     }
 }

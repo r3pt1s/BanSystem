@@ -7,11 +7,13 @@ use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
 use r3pt1s\bansystem\BanSystem;
 use r3pt1s\bansystem\util\Configuration;
+use r3pt1s\bansystem\util\Language;
+use r3pt1s\bansystem\util\LanguageKeys;
 
-class MuteIdsCommand extends Command implements PluginOwned {
+final class MuteIdsCommand extends Command implements PluginOwned {
 
     public function __construct() {
-        parent::__construct("muteids", "See all muteids", "/muteids");
+        parent::__construct("muteids", Language::get()->translate(LanguageKeys::COMMAND_DESCRIPTION_MUTE_IDS), "/muteids");
         $this->setPermission("bansystem.command.muteids");
     }
 
@@ -22,7 +24,7 @@ class MuteIdsCommand extends Command implements PluginOwned {
                 $sender->sendMessage("§8» §e" . $id->getId() . " §8- §e" . $id->getReason() . " §8- §e" . ($id->getDuration() === null ? "PERMANENTLY" : $id->getDuration()));
             }
         } else {
-            $sender->sendMessage(BanSystem::getPrefix() . BanSystem::NO_PERMS);
+            $sender->sendMessage(Language::get()->translate(LanguageKeys::NO_PERMS));
         }
         return true;
     }

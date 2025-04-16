@@ -1,0 +1,267 @@
+{
+  "waterdogpe.info": "§cWenn du WaterdogPE benutzt, solltest du §bStarGate §cverwenden, um Bans und Mutes im gesamten Netzwerk zu synchronisieren.",
+  "raw.permanently": "DAUERHAFT",
+  "raw.yes": "Ja",
+  "raw.no": "Nein",
+  "no.perms": "{PREFIX}§cDu hast keine Berechtigung, diesen Befehl zu verwenden.",
+
+  "command.description.ban": "Einen Spieler bannen",
+  "command.description.ban_ids": "Liste alle Bann-IDs auf",
+  "command.description.ban_info": "Zeige Ban-bezogene Informationen über einen Spieler an",
+  "command.description.ban_list": "Liste alle aktiven Bans auf",
+  "command.description.ban_log": "Zeige den Bannverlauf eines Spielers an",
+  "command.description.edit_ban": "Bearbeite den Bann eines Spielers",
+  "command.description.temp_ban": "Banne einen Spieler vorübergehend nach deinem Willen",
+  "command.description.unban": "Entbanne einen Spieler",
+  "command.description.edit_mute": "Bearbeite den Mute eines Spielers",
+  "command.description.mute": "Mute einen Spieler",
+  "command.description.mute_ids": "Liste alle Mute-IDs auf",
+  "command.description.mute_info": "Zeige Mute-bezogene Informationen über einen Spieler an",
+  "command.description.mute_list": "Liste alle aktiven Mutes auf",
+  "command.description.mute_log": "Zeige den Mute-Verlauf eines Spielers an",
+  "command.description.temp_mute": "Mute einen Spieler vorübergehend nach deinem Willen",
+  "command.description.unmute": "Entmute einen Spieler",
+  "command.description.notify": "Aktiviere oder deaktiviere Benachrichtigungen",
+  "command.description.clear_warns": "Entferne die Verwarnungen eines Spielers",
+  "command.description.warn": "Verwarne einen Spieler",
+  "command.description.warns": "Liste alle Verwarnungen eines Spielers auf",
+  "command.description.kick": "Kicke einen Spieler",
+  "command.description.vanish": "Aktiviere oder deaktiviere Unsichtbarkeit",
+  "command.description.freeze": "Friere einen Spieler ein oder taue ihn auf",
+  "command.description.mute_chat": "Stumme den Chat (vollständig)",
+  "command.description.spectate": "Beobachte einen Spieler",
+
+  "punish.failed.yourself": "{PREFIX}§cDu kannst dich nicht selbst bestrafen!",
+  "player.not.banned": "{PREFIX}§e%0% §cist nicht gebannt!",
+  "player.not.muted": "{PREFIX}§e%0% §cist nicht gemutet!",
+  "player.not.found": "{PREFIX}§cDer Spieler existiert nicht!",
+  "player.not.online": "{PREFIX}§cDer Spieler ist nicht online!",
+  "check.exists.failed": "{PREFIX}§4Fehler beim Überprüfen, ob §e%0% §4existiert!",
+  "check.mute_points.failed": "{PREFIX}§4Fehler beim Abrufen der Mutepunkte von §e%0%",
+  "check.ban_points.failed": "{PREFIX}§4Fehler beim Abrufen der Bannpunkte von §e%0%",
+  "check.ban_logs.failed": "{PREFIX}§4Fehler beim Abrufen der Bannprotokolle von §e%0%",
+  "check.mute_logs.failed": "{PREFIX}§4Fehler beim Abrufen der Muteprotokolle von §e%0%",
+  "valid.time_format": "{PREFIX}§cBitte gib ein gültiges Zeitformat an! Beispiel: §e1d",
+
+  "notifications.enabled": "{PREFIX}§7Du erhältst jetzt Benachrichtigungen!",
+  "notifications.disabled": "{PREFIX}§7Du erhältst keine Benachrichtigungen mehr!",
+
+  "ban.success": "{PREFIX}§7Du hast §c%0%§7 gebannt!",
+  "ban.already_banned": "{PREFIX}§e%0% §cist bereits gebannt!",
+  "ban.event.cancelled": "{PREFIX}§cDas Ereignis wurde abgebrochen und der Spieler kann nicht gebannt werden.",
+  "ban.valid_banid": "{PREFIX}§cBitte gib eine gültige Bann-ID an!",
+
+  "mute.success": "{PREFIX}§7Du hast §c%0%§7 gemutet!",
+  "mute.already_muted": "{PREFIX}§e%0% §cist bereits gemutet!",
+  "mute.event.cancelled": "{PREFIX}§cDas Ereignis wurde abgebrochen und der Spieler kann nicht gemutet werden.",
+  "mute.valid_muteid": "{PREFIX}§cBitte gib eine gültige Mute-ID an!",
+
+  "ban_info.message.not_banned": [
+    "{PREFIX}§7Informationen über §e%0%§8:",
+    "{PREFIX}§7Bannpunkte: §e%1%",
+    "{PREFIX}§7Gebannt: §e%2%"
+  ],
+
+  "ban_info.message.banned": [
+    "{PREFIX}§7Informationen über §e%0%§8:",
+    "{PREFIX}§7Bannpunkte: §e%1%",
+    "{PREFIX}§7Gebannt: §e%2%",
+    "{PREFIX}§7Grund: §e%3%",
+    "{PREFIX}§7Moderator: §e%4%",
+    "{PREFIX}§7Gebannt am: §e%5%",
+    "{PREFIX}§7Dauer: §e%6%"
+  ],
+
+  "mute_info.message.not_muted": [
+    "{PREFIX}§7Informationen über §e%0%§8:",
+    "{PREFIX}§7Mutepunkte: §e%1%",
+    "{PREFIX}§7Gemutet: §e%2%"
+  ],
+
+  "mute_info.message.muted": [
+    "{PREFIX}§7Informationen über §e%0%§8:",
+    "{PREFIX}§7Mutepunkte: §e%1%",
+    "{PREFIX}§7Gemutet: §e%2%",
+    "{PREFIX}§7Grund: §e%3%",
+    "{PREFIX}§7Moderator: §e%4%",
+    "{PREFIX}§7Gemutet am: §e%5%",
+    "{PREFIX}§7Dauer: §e%6%"
+  ],
+
+  "ban_log.none": "{PREFIX}§e%0% §7hat keine Bannprotokolle.",
+  "mute_log.none": "{PREFIX}§e%0% §7hat keine Muteprotokolle.",
+
+  "edit_ban.edit.failed": "{PREFIX}§cDu kannst den Bann von §e%0%§c nicht bearbeiten, da er §lDAUERHAFT§r§c ist.",
+  "edit_ban.success": "{PREFIX}§7Du hast den Bann von §e%0%§7 bearbeitet!",
+  "edit_ban.event.cancelled": "{PREFIX}§cDas Ereignis wurde abgebrochen und der Bann des Spielers kann nicht bearbeitet werden.",
+
+  "edit_mute.edit.failed": "{PREFIX}§cDu kannst den Mute von §e%0%§c nicht bearbeiten, da er §lDAUERHAFT§r§c ist.",
+  "edit_mute.success": "{PREFIX}§7Du hast den Mute von §e%0%§7 bearbeitet!",
+  "edit_mute.event.cancelled": "{PREFIX}§cDas Ereignis wurde abgebrochen und der Mute des Spielers kann nicht bearbeitet werden.",
+
+  "unban.success": "{PREFIX}§7Du hast §e%0%§7 entbannt!",
+  "unban.event.cancelled": "{PREFIX}§cDas Ereignis wurde abgebrochen und der Bann des Spielers kann nicht entfernt werden.",
+
+  "unmute.success": "{PREFIX}§7Du hast §e%0%§7 entmutet!",
+  "unmute.event.cancelled": "{PREFIX}§cDas Ereignis wurde abgebrochen und der Mute des Spielers kann nicht entfernt werden.",
+
+  "kick.success": "{PREFIX}§7Du hast §e%0% §7 vom Server gekickt.",
+  "kick.event.cancelled": "{PREFIX}§cDas Ereignis wurde abgebrochen und der Spieler kann nicht gekickt werden.",
+  "kick.failed": "{PREFIX}§cDu kannst den Spieler nicht kicken.",
+
+  "warns.cleared": "{PREFIX}§7Die Verwarnungen von §e%0% §7 wurden entfernt!",
+  "warns.none": "{PREFIX}§e%0% §7 hat keine Verwarnungen.",
+
+  "warn.success": "{PREFIX}§7Du hast §e%0%§7 verwarnt!",
+  "warn.event.cancelled": "{PREFIX}§cDas Ereignis wurde abgebrochen und der Spieler kann nicht verwarnt werden.",
+
+  "chat_mute.muted.success": "{PREFIX}§7Der Chat wurde §cstummgeschaltet§7!",
+  "chat_mute.unmuted.success": "{PREFIX}§7Der Chat wurde §aentsperrt§7!",
+
+  "chat_mute.muted.global": "{PREFIX}§7Der Chat wurde von §e%0%§7 §cstummgeschaltet§7!",
+  "chat_mute.unmuted.global": "{PREFIX}§7Der Chat wurde von §e%0%§7 §aentsperrt§7!",
+
+  "freeze.frozen": "{PREFIX}§cDu bist derzeit §b eingefroren§c.",
+  "freeze.released": "{PREFIX}§aDu bist nicht mehr §b eingefroren§a!",
+  "freeze.freeze.success": "{PREFIX}§e%0% §7 wurde §b eingefroren§7!",
+  "freeze.release.success": "{PREFIX}§e%0% §7 wurde §b aufgetaut§7!",
+
+  "spectate.start": "{PREFIX}§7Du beobachtest jetzt §e%0%§7!",
+  "spectate.stop": "{PREFIX}§7Du beobachtest nicht mehr.",
+
+  "vanish.vanished": "{PREFIX}§7Du bist jetzt §aunsichtbar§7!",
+  "vanish.shown": "{PREFIX}§7Du bist nicht mehr unsichtbar.",
+
+  "ui.ban.logs.title": "§cBannprotokolle §8» §e%0%",
+  "ui.ban.logs.text": "§e%0% §7hat §c%1% Bannprotokolle§7.",
+  "ui.ban.logs.view.title": "§c%0%",
+  "ui.ban.logs.view.text": [
+    "§7Spieler: §e%0%",
+    "§7Moderator: §e%1%",
+    "§7Gebannt am: §e%2%",
+    "§7Grund: §e%3%",
+    "§7Bis: §e%4%"
+  ],
+
+  "ui.mute.logs.title": "§cMuteprotokolle §8» §e%0%",
+  "ui.mute.logs.text": "§e%0% §7hat §c%1% Muteprotokolle§7.",
+  "ui.mute.logs.view.title": "§c%0%",
+  "ui.mute.logs.view.text": [
+    "§7Spieler: §e%0%",
+    "§7Moderator: §e%1%",
+    "§7Gemutet am: §e%2%",
+    "§7Grund: §e%3%",
+    "§7Bis: §e%4%"
+  ],
+
+  "ui.warn.logs.title": "§cVerwarnungen §8» §e%0%",
+  "ui.warn.logs.text": "§e%0% §7hat §c%1% Verwarnungen§7.",
+  "ui.warn.logs.view.title": "§c%0%",
+  "ui.warn.logs.view.text": [
+    "§7Spieler: §e%0%",
+    "§7Moderator: §e%1%",
+    "§7Verwarnt am: §e%2%",
+    "§7Grund: §e%3%"
+  ],
+
+  "screen.ban": [
+    "§cDu wurdest §lgebannt",
+    "§8» §7Grund: §e%0%",
+    "§8» §7Verbleibende Zeit: §e%1%"
+  ],
+
+  "screen.mute": [
+    "{PREFIX}§cDu wurdest §lgemutet§r§c!",
+    "{PREFIX}§7Grund: §e%0%",
+    "{PREFIX}§7Verbleibende Zeit: §e%1%"
+  ],
+
+  "screen.chat_mute": [
+    "{PREFIX}§cDer Chat ist derzeit stummgeschaltet.",
+    "{PREFIX}§cBitte warte, bis der Chat wieder freigegeben wird."
+  ],
+
+  "screen.warn": [
+    "{PREFIX}§cDu wurdest §lverwarnt§r§c!",
+    "{PREFIX}§7Grund: §e%0%"
+  ],
+
+  "screen.kick": [
+    "§8» §cDu wurdest §lgekickt §r§8«",
+    "§8» §7Grund: §e%0%"
+  ],
+
+  "notify.ban.auto": [
+    "{PREFIX}§e%0% §7wurde automatisch §cverbannt§7.",
+    "{PREFIX}§7Grund: §e%1%",
+    "{PREFIX}§7Bis: §e%2%"
+  ],
+
+  "notify.ban.manual": [
+    "{PREFIX}§e%0% §7wurde von §e%1%§7 §cverbannt§7.",
+    "{PREFIX}§7Grund: §e%2%",
+    "{PREFIX}§7Bis: §e%3%"
+  ],
+
+  "notify.ban.edited": [
+    "{PREFIX}§7Der Bann von §e%0% §7 wurde von §e%1%§7 bearbeitet.",
+    "{PREFIX}§7Neue Dauer: §e%2%"
+  ],
+
+  "notify.unban.auto": [
+    "{PREFIX}§e%0% §7 wurde automatisch §aentbannt§7."
+  ],
+
+  "notify.unban.manual": [
+    "{PREFIX}§e%0% §7 wurde von §e%1%§7 §aentbannt§7.",
+    "{PREFIX}§7Fehler: §e%2%"
+  ],
+
+  "notify.mute.auto": [
+    "{PREFIX}§e%0% §7 wurde automatisch §cgemutet§7.",
+    "{PREFIX}§7Grund: §e%1%",
+    "{PREFIX}§7Bis: §e%2%"
+  ],
+
+  "notify.mute.manual": [
+    "{PREFIX}§e%0% §7 wurde von §e%1%§7 §cgemutet§7.",
+    "{PREFIX}§7Grund: §e%2%",
+    "{PREFIX}§7Bis: §e%3%"
+  ],
+
+  "notify.mute.edited": [
+    "{PREFIX}§7Der Mute von §e%0% §7 wurde von §e%1%§7 bearbeitet.",
+    "{PREFIX}§7Neue Dauer: §e%2%"
+  ],
+
+  "notify.unmute.auto": [
+    "{PREFIX}§e%0% §7 wurde automatisch §aentmutet§7."
+  ],
+
+  "notify.unmute.manual": [
+    "{PREFIX}§e%0% §7 wurde von §e%1%§7 §aentmutet§7.",
+    "{PREFIX}§7Fehler: §e%2%"
+  ],
+
+  "notify.warn.add": [
+    "{PREFIX}§e%0% §7 wurde von §e%1%§7 §cverwarnt§7.",
+    "{PREFIX}§7Grund: §e%2%"
+  ],
+
+  "notify.warn.remove": [
+    "{PREFIX}§7Die Verwarnung von §e%0% §7 für §e%1% §7 wurde von §e%2%§7 §aentfernt§7.",
+    "{PREFIX}§7Grund für die Verwarnung: §e%3%"
+  ],
+
+  "notify.warn.cleared": [
+    "{PREFIX}§7Die Verwarnungen von §e%0% §7 wurden §aentfernt§7.",
+    "{PREFIX}§7Moderator: §e%1%"
+  ],
+
+  "notify.kick": [
+    "{PREFIX}§e%0% §7 wurde von §e%1%§7 §cgekickt§7!",
+    "{PREFIX}§7Grund: §e%1%"
+  ],
+
+  "mute.command.blocked": "{PREFIX}§7Du kannst den Befehl §e%0%§7 nicht ausführen."
+}

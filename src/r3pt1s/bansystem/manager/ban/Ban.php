@@ -2,7 +2,7 @@
 
 namespace r3pt1s\bansystem\manager\ban;
 
-class Ban {
+final class Ban {
 
     public function __construct(
         private readonly string $player,

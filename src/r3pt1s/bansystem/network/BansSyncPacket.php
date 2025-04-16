@@ -8,7 +8,7 @@ use alemiz\sga\protocol\types\PacketHelper;
 use r3pt1s\bansystem\manager\ban\Ban;
 use r3pt1s\bansystem\manager\ban\BanManager;
 
-class BansSyncPacket extends StarGatePacket {
+final class BansSyncPacket extends StarGatePacket {
 
     private array $bans = [];
 

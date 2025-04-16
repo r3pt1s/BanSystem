@@ -6,6 +6,7 @@ use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerChatEvent;
 use pocketmine\event\player\PlayerJoinEvent;
 use pocketmine\event\player\PlayerLoginEvent;
+use pocketmine\event\player\PlayerQuitEvent;
 use pocketmine\event\server\CommandEvent;
 use pocketmine\player\Player;
 use pocketmine\Server;
@@ -14,8 +15,10 @@ use r3pt1s\bansystem\manager\ban\BanManager;
 use r3pt1s\bansystem\manager\mute\MuteManager;
 use r3pt1s\bansystem\manager\notify\NotifyManager;
 use r3pt1s\bansystem\util\Configuration;
+use r3pt1s\bansystem\util\Language;
+use r3pt1s\bansystem\util\LanguageKeys;
 
-class EventListener implements Listener {
+final class EventListener implements Listener {
 
     public function onLogin(PlayerLoginEvent $event): void {
         $player = $event->getPlayer();
@@ -39,13 +42,25 @@ class EventListener implements Listener {
             fn() => BanSystem::getInstance()->getLogger()->warning("§cFailed to check if §e" . $player->getName() . " §calready exists")
         );
 
-        BanSystem::getInstance()->getProvider()->getBanPoints($player->getName());
+        if (BanSystem::getInstance()->isFrozen($player)) $player->setNoClientPredictions();
+    }
+
+    public function onQuit(PlayerQuitEvent $event): void {
+        $player = $event->getPlayer();
+        if (BanSystem::getInstance()->isSpectating($player)) BanSystem::getInstance()->stopSpectating($player, true);
+        if (BanSystem::getInstance()->isVanished($player)) BanSystem::getInstance()->showPlayer($player);
     }
 
     public function onChat(PlayerChatEvent $event): void {
         $player = $event->getPlayer();
         if (($screen = MuteManager::getInstance()->getMuteHandler()->handle($player->getName())) !== null && !$player->hasPermission("bansystem.bypass.mute")) {
             $player->sendMessage($screen);
+            $event->cancel();
+            return;
+        }
+
+        if (BanSystem::getInstance()->isChatMuted() && !$player->hasPermission("bansystem.bypass.chat_mute")) {
+            $player->sendMessage(Language::get()->translate(LanguageKeys::SCREEN_CHAT_MUTE));
             $event->cancel();
         }
     }
@@ -70,7 +85,7 @@ class EventListener implements Listener {
                 }
 
                 if ($anyAliasBlocked) {
-                    $sender->sendMessage(BanSystem::getPrefix() . "§7You can't execute the command §e/" . $command->getName() . "§7.");
+                    $sender->sendMessage(Language::get()->translate(LanguageKeys::MUTE_COMMAND_BLOCKED, "/" . $command->getName()));
                     $event->cancel();
                 }
             }

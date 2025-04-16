@@ -10,7 +10,7 @@ use r3pt1s\bansystem\BanSystem;
 use r3pt1s\bansystem\event\notify\NotifyEvent;
 use r3pt1s\bansystem\network\NotifyPacket;
 
-class NotifyManager {
+final class NotifyManager {
     use SingletonTrait;
 
     private array $states = [];

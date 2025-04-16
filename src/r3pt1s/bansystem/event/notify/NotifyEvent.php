@@ -6,7 +6,7 @@ use pocketmine\event\Cancellable;
 use pocketmine\event\CancellableTrait;
 use pocketmine\event\Event;
 
-class NotifyEvent extends Event implements Cancellable {
+final class NotifyEvent extends Event implements Cancellable {
     use CancellableTrait;
 
     public function __construct(private string $message) {}
