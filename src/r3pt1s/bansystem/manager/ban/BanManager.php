@@ -28,7 +28,6 @@ final class BanManager {
     private array $bans = [];
 
     public function __construct() {
-        self::setInstance($this);
         $this->banHandler = new BanHandler();
     }
 
@@ -39,7 +38,10 @@ final class BanManager {
 
     /** @internal */
     public function load(): void {
-        BanSystem::getInstance()->getProvider()->getBans()->onCompletion(fn(array $bans) => $this->bans = $bans, fn() => BanSystem::getInstance()->getLogger()->emergency("§cFailed to fetch bans"));
+        BanSystem::getInstance()->getProvider()->getBans()->onCompletion(function(array $bans): void {
+            self::setInstance($this);
+            $this->bans = $bans;
+        }, fn() => BanSystem::getInstance()->getLogger()->emergency("§cFailed to fetch bans"));
     }
 
     public function addBan(Ban $ban, bool $automatic = false): int {

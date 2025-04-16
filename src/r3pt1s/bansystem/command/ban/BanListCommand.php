@@ -21,7 +21,7 @@ final class BanListCommand extends Command implements PluginOwned {
         if ($this->testPermissionSilent($sender)) {
             $bans = array_keys(BanManager::getInstance()->getBans());
             $sender->sendMessage(BanSystem::getPrefix() . "§7Bans §8(§e" . count($bans) . "§8)§7:");
-            $sender->sendMessage("§8» §e" . (count($bans) == 0 ? "§e0" : implode("§8, §e", $bans)));
+            $sender->sendMessage("§8» §e" . (count($bans) == 0 ? "§c/" : implode("§8, §e", $bans)));
         } else {
             $sender->sendMessage(Language::get()->translate(LanguageKeys::NO_PERMS));
         }

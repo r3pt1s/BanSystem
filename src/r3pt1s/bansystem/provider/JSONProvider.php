@@ -8,7 +8,9 @@ use pocketmine\promise\PromiseResolver;
 use pocketmine\utils\Config;
 use r3pt1s\bansystem\BanSystem;
 use r3pt1s\bansystem\manager\ban\Ban;
+use r3pt1s\bansystem\manager\ban\BanManager;
 use r3pt1s\bansystem\manager\mute\Mute;
+use r3pt1s\bansystem\manager\mute\MuteManager;
 use r3pt1s\bansystem\util\Configuration;
 
 final class JSONProvider implements Provider {
@@ -24,6 +26,9 @@ final class JSONProvider implements Provider {
         $this->bansFile = new Config(Configuration::getInstance()->getBanPath() . "bans.json", Config::JSON);
         $this->mutesFile = new Config(Configuration::getInstance()->getMutePath() . "mutes.json", Config::JSON);
         $this->playersFile = new Config(Configuration::getInstance()->getInfoPath() . "players.json", Config::JSON);
+
+        BanManager::getInstance()->load();
+        MuteManager::getInstance()->load();
     }
 
     public function addBan(Ban $ban): void {

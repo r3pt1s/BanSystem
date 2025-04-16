@@ -26,7 +26,6 @@ final class MuteManager {
     private array $mutes = [];
 
     public function __construct() {
-        self::setInstance($this);
         $this->muteHandler = new MuteHandler();
     }
 
@@ -37,7 +36,10 @@ final class MuteManager {
 
     /** @internal */
     public function load(): void {
-        BanSystem::getInstance()->getProvider()->getMutes()->onCompletion(fn(array $mutes) => $this->mutes = $mutes, fn() => BanSystem::getInstance()->getLogger()->emergency("§cFailed to fetch mutes"));
+        BanSystem::getInstance()->getProvider()->getMutes()->onCompletion(function(array $mutes): void {
+            self::setInstance($this);
+            $this->mutes = $mutes;
+        }, fn() => BanSystem::getInstance()->getLogger()->emergency("§cFailed to fetch mutes"));
     }
 
     public function addMute(Mute $mute, bool $automatic = false): int {

@@ -27,7 +27,7 @@ final class Ban {
     }
 
     public function isExpired(): bool {
-        return $this->expire !== null && $this->expire <= new \DateTime("now");
+        return $this->expire !== null && $this->expire <= new \DateTime();
     }
 
     public function getPlayer(): string {
