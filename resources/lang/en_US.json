@@ -177,7 +177,7 @@
   ],
 
   "screen.chat_mute": [
-    "{PREFIX}§$cThe chat is currently muted.",
+    "{PREFIX}§cThe chat is currently muted.",
     "{PREFIX}§cPlease wait until the chat is getting unmuted again."
   ],
 
